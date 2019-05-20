@@ -31,8 +31,8 @@
     <!-- <script src="http://code.responsivevoice.org/responsivevoice.js"></script> -->
     <script src="js/responsivevoice.js"></script>
 
-    <link href="leaflet/v1.0.3/leaflet.css" rel="stylesheet" />
-    <script src="leaflet/v1.0.3/leaflet.js"></script>
+    <link href="leaflet_v1.0.3/leaflet.css" rel="stylesheet" />
+    <script src="leaflet_v1.0.3/leaflet.js"></script>
     <script src="js/heatmap.min.js"></script>
     <script src="js/leaflet-heatmap.js"></script>
 
@@ -43,27 +43,22 @@
 </head>
 <body>
     <div style="position: relative;">
-        <img src="imgs/cura-background_txt.png" style="width:100%;"/>
+        <img src="png/MorpcLogo.png" style="width:8%;"/>
+
         <!-- <div style="position:absolute; bottom:10px; left:30px;">
             <h3 style="color:#F35">D A S H B O A R D  ( 版本 丁 )</h3>
         </div> -->
-        <div style="position:absolute; bottom:10px; right:15%;">
+        <div style="position:absolute; bottom:20px; right:5%;text-align:center;">
             <ul id="menu">
-                <li class="menusel"><a>Home</a></li>
+                <li class="menusel"><a>Goal 1</a></li>
                 <li> &middot; </li>
-                <li class="menusel"><a href="https://osu.az1.qualtrics.com/jfe/form/SV_0czmqhKC4mLidIV">Survey</a></li>
+                <li class="menusel"><a>Goal 2</a></li>
                 <li> &middot; </li>
-                <li><a href="mapgallery/">Map gallery</a></li>
+                <li class="menusel"><a>Goal 3</a></li>
                 <li> &middot; </li>
-                <!-- <li><a>Dynamic Bus Maps</a>
-                    <ul> -->
-                        <li><a href="busdelays/">Bus delays</a></li>
-                        <li> &middot; </li>
-                        <li><a href="transit_access/">Transit accessibility</a></li>
-                    <!-- </ul>
-                </li> -->
+                <li class="menusel"><a>Goal 4</a></li>
                 <li> &middot; </li>
-                <li><a id="aaaaa" style="cursor: pointer;">Tutorial</a></li>
+                <li class="menusel"><a>Goal 5</a></li>
                 <li> &middot; </li>
                 <li class="end"><a href="about.html">About</a></li>
             </ul>
@@ -80,141 +75,7 @@
 
     <br/> -->
 
-    <div class="row" id="topbanner">
-        <div class="col-md-1 col-sm-1" id="banner-widgets">
-            <div style="background-color: grey;" class="announcer inner-div" id="announcerx">
-                <script>
-                    function talk() {
-                        responsiveVoice.speak("Hi! Thanks for using the Curio dashboard. It is " + d3.time.format("%A, %b %d %I %M %p")(curr_time) + ". Currently" + traffic_msg + ", " + aq_msg + ", and tweets are mostly about " + tweet_msg);
-                    }
-                </script>
-                <a class="x" id="speaker-button">
-                    <i onclick="talk()" class="fa fa-volume-up" aria-hidden="true"></i>
-                </a>
-                &nbsp;
-                <a class="x" href="#myCarousel" data-toggle="modal" id="help-button">
-                    <i class="fa fa-question-circle" aria-hidden="true"></i>
-                </a>
-                <!-- &nbsp;
-                <a class="x" href="#settings" data-toggle="modal" id="settings-button" onclick="do_settings()">
-                    <i class="fa fa-cog" aria-hidden="true"></i>
-                </a> -->
-            </div>
-        </div>
-
-        <div class="modal" id="settings" tabindex="-1" role="dialog" aria-labeledby="modalLabel">
-          <div class="modal-dialog modal-md">
-            <div class="modal-content" style="background-color: black;">
-                <div class="modal-header">
-                    <!-- <button class="success" data-dismiss="modal">close</button> -->
-                  <button class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title" style="color: #DDDDDD;">Settings</h5>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-footer">
-                        Accept cookies: <input type="checkbox" id="acceptcookies" onclick="set_acceptcookies('wow', this)">
-                        <br/>
-                        <p>Accepting cookies means we will store your settings, which will be used in your future visits to this site. The following settings will only be functional if the accept cookies option is checked.</p>
-                        <hr/>
-                        Auto speak: <input type="checkbox" id="autospeak" onclick="set_autospeak()">
-                        <br/>
-                        Save custom layout: <input type="checkbox" id="savelayout" onclick="set_savelayout()">
-
-                    </div>
-                      <!--end of item-->
-                </div>
-            </div>
-            <!--modal content-->
-          </div>
-          <!--modal-dialog-->
-        </div>
-
-        <script>
-        this.saveGrid = function () {
-            alert("savegrid");
-            this.serializedData = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
-                el = $(el);
-                var node = el.data('_gridstack_node');
-                return {
-                    x: node.x,
-                    y: node.y,
-                    width: node.width,
-                    height: node.height
-                };
-            }, this);
-            $('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
-            return false;
-        }.bind(this);
-
-        $('#savelayout').click(this.saveGrid);
-
-        function set_acceptcookies(value, object) {
-
-            alert(value)
-        }
-
-        function do_settings() {
-            // alert(document.getElementById("acceptcookies").checked);
-            // var x = document.cookie;
-            // alert(x=="");
-        }
-
-        // w3schools
-        function setCookie(cname,cvalue,exdays) {
-            var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*60*1000));
-            var expires = "expires=" + d.toGMTString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
-
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for(var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-
-        function checkCookie() {
-            var user=getCookie("username");
-            if (user != "") {
-                alert("Welcome again " + user);
-            } else {
-               user = prompt("Please enter your name:","");
-               if (user != "" && user != null) {
-                   setCookie("username", user, 30);
-               }
-            }
-        }
-
-
-
-        </script>
-
-        <div class="col-md-11 col-sm-11" id="announcers">
-            <div class="col-md-3 col-sm-3">
-                <div class="announcer inner-div" id="announcer0">
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-3">
-                <div class="announcer inner-div" id="announcer1"></div>
-            </div>
-            <div class="col-md-3 col-sm-3">
-                <div class="announcer inner-div" id="announcer2"></div>
-            </div>
-            <div class="col-md-3 col-sm-3">
-                <div class="announcer inner-div" id="announcer3"></div>
-            </div>
-        </div>
-    </div>
+    
 
     <script src="js2/script-prior.js"></script>
 
@@ -222,7 +83,7 @@
 
     <script src="setup.js"></script>
 
-    <script src="js2/script-cogo-stacked-chart.js"></script>
+    <!-- <script src="js2/script-cogo-stacked-chart.js"></script>
     <script src="js2/script-histogram.js"></script>
     <script src="js2/script-tweets.js"></script>
     <script src="js2/script-air-quality.js"></script>
@@ -230,7 +91,7 @@
     <script src="js2/script-cota-gtfs3_buses.js"></script>
     <script src="js2/script-cota-gtfs3_delays.js"></script>
     <script src="data/cameras.geojson.js"></script>
-    <script src="js2/script-buckeye-traffic.js"></script>
+    <script src="js2/script-buckeye-traffic.js"></script> -->
 
     <script src="dshbrd_ttrl/intro.min.js"></script>
     <script src="dshbrd_ttrl/tutorial.js"></script>
@@ -345,7 +206,7 @@
                             <li>Click on &nbsp; <i class="iconlink fa fa-map-o fa-1x"></i> &nbsp; to view a more detailed map about the theme. </li>
                             <li>Click on &nbsp; <i class="iconlink fa fa-line-chart fa-1x"></i> &nbsp; to view the longer term trend of the theme.</li>
                             <li>Change demographic data using the dropdown list above the population histogram.</li>
-                            <p/>
+                            <p></p>>
                             <li>The household income chart shows percent of median household income in 3 categories in 9 cities.</li>
                         </ol>
                     </div>
