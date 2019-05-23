@@ -10,14 +10,14 @@ $('.grid-stack').gridstack(options);
 // new function () {
 this.serializedData = {
     'map': {x: 0, y: 0, width: 6, height: 8, id: "map"},
-    'cogo': {x: 6, y: 1, width: 3, height: 4, id: "plot1", title: 'COGO Bikes', pinid: 'cogo-pin', linkmap: null, linktrend: null},
-    'demography': {x: 12, y: 1, width: 3, height: 4, id: "plot2", title: '<select id="histogram-vars"></select>', pinid:'histogram-pin', linkmap: null, linktrend: null},
-    'tweets': {x: 6, y: 8, width: 3, height: 4,  id: "plot3", title: 'Tweets', pinid: 'tweets-pin', linkmap: 'http://gis.osu.edu/misc/twitter', linktrend: 'misc/tweets-trends.html'},
-    'aq': {x: 12, y: 8, width: 3, height: 4, id: "plot4", title: 'Air Quality Index (PM 2.5)', pinid: 'aq-pin', linkmap: null, linktrend: null},
-    'cameras': {x: 0, y: 12, width: 3, height: 4, id: "plot5", title: 'Traffic camera', pinid: 'camera-pin', linkmap: null, linktrend: null},
-    'trips': {x: 3, y: 12, width: 3, height: 4, id: "plot6", title: 'Trips (minutes)', pinid: 'trips-pin', linkmap: null, linktrend: 'misc/trips-trends.html'},
-    'buses': {x: 6, y: 12, width: 3, height: 4, id: "plot7", title: 'Operating Buses', pinid: 'cotabuses-bus-pin', linkmap: null, linktrend: null},
-    'delays': {x: 9, y: 12, width: 3, height: 4, id: "plot8", title: 'Bus Delays', pinid: 'cotalocation-delay-pin', linkmap: null, linktrend: null}
+    'vmt': {x: 6, y: 1, width: 3, height: 4, id: "plot1", title: 'Vehicle Miles Traveled', pinid: 'vmt-pin', linkmap: null, linktrend: null},
+    'soc': {x: 12, y: 1, width: 3, height: 4, id: "plot2", title: 'Share of Commuters', pinid:'soc-pin', linkmap: null, linktrend: null},
+    'afv': {x: 6, y: 8, width: 3, height: 4,  id: "plot3", title: 'Percentage of AFV', pinid: 'afv-pin', linkmap: null, linktrend: null},
+    'tmt': {x: 12, y: 8, width: 3, height: 4, id: "plot4", title: 'Trail Miles Traveled', pinid: 'tmt-pin', linkmap: null, linktrend: null},
+    'afs': {x: 0, y: 12, width: 3, height: 4, id: "plot5", title: 'Percentage of AF Station', pinid: 'afs-pin', linkmap: null, linktrend: null},
+    'ec': {x: 3, y: 12, width: 3, height: 4, id: "plot6", title: 'Energy Consumption', pinid: 'ec-pin', linkmap: null, linktrend: null},
+    'ref': {x: 6, y: 12, width: 3, height: 4, id: "plot7", title: 'Renewable Energy Facilities', pinid: 'ref-pin', linkmap: null, linktrend: null},
+    // 'delays': {x: 9, y: 12, width: 3, height: 4, id: "plot8", title: 'Bus Delays', pinid: 'cotalocation-delay-pin', linkmap: null, linktrend: null}
     // 'gas': {x: 0, y: 12, width: 3, height: 4, id: "plot9", title: 'Gas Prices ($)', pinid: 'gasprices-pin', linkmap: null, linktrend: null}
 };
 
