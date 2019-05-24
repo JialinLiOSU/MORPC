@@ -47,7 +47,8 @@ var xAxis = d3.svg.axis()
     .orient("bottom");
 var yAxis = d3.svg.axis()
     .scale(y)
-    .orient("left");
+    .orient("left")
+    .tickValues([3000,6000,9000]);
 
 var chart = d3.select(cogo_id).append("svg")
     .attr("width", $(cogo_id).width())
