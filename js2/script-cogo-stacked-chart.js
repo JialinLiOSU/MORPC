@@ -1,7 +1,7 @@
 // this is for cogo data
 // use prefix: cogo_
 
-var gridnode = find_grid_by_name('cogo');
+var gridnode = find_grid_by_name('vmt');
 var cogo_id = '#' + gridnode.id; // "#plot1";
 var cogo_pin_id = '#' + gridnode.pinid;
 
