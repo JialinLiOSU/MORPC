@@ -8,16 +8,16 @@ with open(path) as data_file:
     data = json.load(data_file)
 
 variableNames=['a','b','c','d','e','f']
-propertyList=[]
 
-for j in range(6):
-    randNums=[]
-    for i in range(6):
-        dic_temp={variableNames[i]:random.randint(1,101)}
-        randNums.append(dic_temp)
-    propertyList.append(randNums)
 # feature_collection = geojson.FeatureCollection(data)
 for feature in data['features']:
+    propertyList=[]
+    for j in range(6):
+        randNums=[]
+        for i in range(6):
+            dic_temp={variableNames[i]:random.randint(1,101)}
+            randNums.append(dic_temp)
+        propertyList.append(randNums)
     feature['properties']['2012']=propertyList[0]
     feature['properties']['2013']=propertyList[1]
     feature['properties']['2014']=propertyList[2]
