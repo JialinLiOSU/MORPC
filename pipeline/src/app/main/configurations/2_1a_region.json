@@ -1,0 +1,18 @@
+{
+	"schema_name": "2_1a_region",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "year",
+		"field_type": "long",
+        "primary_key": "true"
+	}, {
+		"field_name": "unhealthy_for_sensitive_groups",
+		"field_type": "long"
+	}, {
+		"field_name": "unhealthy",
+		"field_type": "long"
+	},{
+		"field_name": "very_unhealthy",
+		"field_type": "long"
+	}]
+}

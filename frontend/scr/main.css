@@ -1,0 +1,1651 @@
+body, html {
+    margin: 5px;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+#mapInfo-sidebar {
+    height: 160px;
+    width: 100%;
+}
+
+#mapInfo-sidebar-container{
+    background-color: #ffffff; 
+}
+
+#map-button-container {
+    height: 75px;
+    width: 160px;
+}
+
+.grid-stack {
+    background: none;
+    margin-left: 0px;
+    float: left;
+    /* lightgoldenrodyellow;*/
+}
+
+#grid-container{
+    float: right;
+}
+
+#banner-container {
+    width: 100%;
+    float:right;
+}
+
+.map-text {
+    float: left;
+/*    margin-top:5px;*/
+    margin-left: 10px;
+    margin-top: 0px;
+/*    top: -5px;*/
+    font-family: "proxima-nova", sans-serif;
+    font-size: 15px;
+    position: relative;
+    scrollbar-width: none !important;
+    border: solid!important;
+    border-color: #dfdfdf!important;
+    border-width: 0px!important;
+    width: 100%;
+    resize: none;
+}
+
+.card-text {
+    float: right;
+    margin: 0px 0px 0px 0px;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 11px;
+    position: absolute;
+    scrollbar-width: none !important;
+    border: solid!important;
+    border-color: #dfdfdf!important;
+    border-width: 1px!important;
+    resize: none;
+}
+
+.card-text::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.card-text-container {
+    /* float: right;
+    margin: 5px 5px 5px 5px;
+    position: relative; */
+    /* border-color: #f0f0f0; */
+    float: right;
+    margin: 00px 00px 0px 0px;
+    font-family: "proxima-nova", sans-serif;
+    position: absolute;
+}
+
+.text-box {
+    font-size: medium;
+}
+
+
+.addButton {
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #e7e7e7;
+    position: relative;
+    border-style: dashed;
+}
+
+.grid-stack-item-content {
+    color: #2c3e50;
+    border: solid lightgrey 2px;
+    left:0px; 
+    right:5px;
+    /* text-align: center; */
+    overflow: hidden;
+    overflow-y: hidden!important;
+    scrollbar-width: none !important;
+    background-color: #fff;
+    box-shadow: 2px 2px 2px lightgrey;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    
+}
+
+.grid-stack-item-content::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.sidenav {
+    scrollbar-width: none !important;
+}
+
+html, body {
+    scrollbar-width: none !important;
+}
+
+body::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.sidenav::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.row {
+    padding: 5px 19px;
+}
+
+.row>div {
+    padding: 0px;
+    text-align: center;
+}
+
+[class*="col-"] {
+    margin: 0px 0px;
+    padding: 0px;
+}
+
+.inner-div {
+    border: 2px solid #DDD;
+    /* as same as body background */
+    background: #FFF;
+    padding: 0px;
+    /*outline: 1px dotted #dadada;*/
+    /*outline-offset: -10px;*/
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.title-bar {
+    padding: 3px;
+    /* background: #f0f0f0 !important; */
+}
+
+.graph-title {
+    font-size: 16px;
+    font-family: 'proxima-nova', sans-serif;
+    text-anchor: start;
+    text-align: left;
+    color: #988;
+}
+
+.move-handle {
+    cursor: grab!important;
+}
+
+.cameraimg {
+    display: block;
+    margin: auto;
+    /* margin-top: 10px; */
+}
+
+.graph-title.highlight {
+    color: #522;
+}
+
+.announcer {
+    /*height: 50px;*/
+    line-height: 40px;
+    vertical-align: middle;
+    font-size: 16px;
+    color: white;
+    opacity: 0.7;
+}
+
+a {
+    color: #BAA;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #F00;
+    text-decoration: none;
+}
+
+a.x {
+    color: #FFF;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a.x:hover {
+    color: #FAB;
+    text-decoration: none;
+}
+
+select {
+    /* font-size: 12px; */
+    border: 0px solid #d9edf7;
+    /* border: 0px; */
+    outline: none;
+    border-radius: 0px;
+    background-color: transparent !important;
+    /* background-size: 10px 10px; */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-family: 'proxima-nova', sans-serif !important;
+    font-size: 15px !important;
+    /* -webkit-box-shadow: 0 1px 0 #ccc;
+    -moz-box-shadow: 0 1px 0 #ccc;
+    box-shadow: 0 1px 0 #ccc; */
+}
+
+select:hover {
+    border: 0px solid #d9edf7;
+    outline: none;
+    border-radius: 0px;
+    background-color: transparent !important;
+    cursor: pointer;
+}
+
+.selection {
+    fill: #d9edf7;
+    fill-opacity: 0.3;
+}
+
+/* icons floating to the left */
+
+.iconlink {
+    color: #AAA;
+    position: relative;
+    top: 0px;
+}
+
+.iconlink.highlight {
+    color: #05053B;
+}
+
+.iconlink.right {
+    padding: 3px;
+    float: right;
+    right: 20px;
+    color: #337ab7;
+}
+
+/*
+.iconlink.hide {
+    display: none;
+}
+*/
+
+.iconlink:hover {
+    color: #05053B;
+    cursor: pointer;
+}
+
+/* axes  */
+
+.axis {
+    font-size: 10px;
+    font-family: 'proxima-nova', sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #444;
+    shape-rendering: crispEdges;
+    stroke-width: 0.5px;
+}
+
+.x.axis path {
+    display: none;
+}
+
+/* area chart */
+
+.area {
+    fill: grey;
+    opacity: 0;
+}
+
+/* bar chart */
+
+.bar {
+    fill: #74c476;
+}
+
+.bar:hover {
+    fill: #31a354;
+}
+
+.bar.active {
+    fill: #FAA;
+}
+
+.banner {
+    color: #999;
+}
+
+.banner:hover {
+    color: #F55;
+}
+
+#menu, #menu ul {
+    list-style: none;
+    /* no bullets */
+    margin: 0px;
+    padding: 0px;
+    float: right;
+}
+
+#menu ul {
+    position: absolute;
+    /* submenu beneath main menu */
+    top: auto;
+    z-index: 100;
+}
+
+#menu ul ul {
+    position: absolute;
+    z-index: 500;
+}
+
+#menu li {
+    margin-left: 0px;
+    padding: 5px 5px;
+    /* rectangle bounding box */
+    margin: 0px;
+    display: inline;
+    float: left;
+}
+
+#menu a {
+    display: inline-block;
+    /* show main menu */
+    text-decoration: none;
+    /* no underlines */
+    color: #56392c;
+    /* original color on main and sub manu, echo header */
+    /* padding: 5px 15px;        /* rectangle bounding box */
+    margin: 0px;
+    /* height: 16px; */
+    /* border-bottom: 1px solid #C0C0C0; */
+}
+
+#menu li a {
+    /* border-right: 2px solid #C0C0C0; */
+}
+
+#menu li.end a, li .end a {
+    border-right: 0px solid #FFC0C0;
+}
+
+#menu li li {
+    padding: 2px 5px;
+    /* rectangle bounding box */
+    margin: 0px;
+    /* border: 1px solid #C0C0C0; */
+}
+
+#menu li li a {
+    /* padding: 10px 0px;        /* rectangle bounding box */
+    margin: 0px;
+    /* border: 1px solid #C0C0C0; */
+}
+
+#menu li a:hover {
+    color: #990000;
+    /* font color when hover on main menu */
+}
+
+#menu li li a:hover {
+    color: #990000;
+    /* change font color when hover on submenu -- if needed */
+}
+
+#menu li {
+    /* bacC; */
+}
+
+#menu li.menusel a, li .menusel a {
+    /* selected/current menu item */
+    /* background-color: #CFC7C7; */
+    color: #365072;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: bold
+}
+
+#menu li.menusel a, li .menusel a {
+    /* selected/current menu item */
+    /* background-color: #CFC7C7; */
+    color: #365072;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: bold
+}
+
+#menu .menusel:hover {
+    color: red;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: bold
+}
+
+#menu li.menulink a {
+    color: grey;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: bold
+}
+
+#menu li.menulink a:hover {
+    color: red;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: bold
+}
+
+#menu li.end a:hover {
+    color: red;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: bold"
+
+}
+
+#menu ul, menu li:hover ul {
+    background-color: #EFECEC;
+    display: none;
+    /* submenu hidden at first */
+}
+
+#menu li:hover ul, menu ul li:hover ul, menu ul ul li:hover ul {
+    display: block;
+    /* display submenu */
+}
+
+/* fixed width of submenu */
+
+#menu li li {
+    width: 200px;
+}
+
+/* IE fixes? */
+
+#menu li li {
+    float: left;
+    clear: both;
+}
+
+#menu li li a {
+    height: 1%;
+}
+
+/* line chart */
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+/* air quality line highlight */
+
+.line.aq_highlight {
+    stroke: red;
+    stroke-width: 3;
+}
+
+/* pie chart */
+
+.arc text {
+    font-size: 10px;
+    font-family: 'proxima-nova', sans-serif;
+    text-anchor: middle;
+}
+
+.arc path {
+    stroke: #fff;
+}
+
+/* hoverline for cogo */
+
+.hover-line-cogo {
+    stroke: #9f9;
+    fill: none;
+    stroke-width: 2px;
+    left: 10px;
+    shape-rendering: crispEdges;
+    /*opacity: 1e-6;*/
+}
+
+/* hoverline for histogram */
+
+.hover-line-histo {
+    stroke: #f99;
+    fill: none;
+    stroke-width: 2px;
+    left: 10px;
+    shape-rendering: crispEdges;
+    /*opacity: 1e-6;*/
+}
+
+/* hoverline for tweets */
+
+.hover-line-tweets {
+    stroke: #f99;
+    fill: none;
+    stroke-width: 2px;
+    left: 10px;
+    shape-rendering: crispEdges;
+    /*opacity: 1e-6;*/
+}
+
+.hover-line-cotalocation {
+    stroke: #f99;
+    fill: none;
+    stroke-width: 2px;
+    left: 10px;
+    shape-rendering: crispEdges;
+    /*opacity: 1e-6;*/
+}
+
+/* hoverline for gas */
+
+/* .hover-line {
+    stroke: #D6D7E8;
+    fill: none;
+    stroke-width: 1px;
+    left: 10px;
+    shape-rendering: crispEdges;
+    opacity: 1e-6;
+}
+*/
+
+.hover-text {
+    stroke: none;
+    font-size: 13px;
+    font-weight: normal;
+    fill: #000000;
+}
+
+.info {
+    padding: 2px 3px;
+    font: 14px/16px;
+    font-family: 'proxima-nova', sans-serif;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #666;
+}
+
+.info h5 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+/* Plot legend */
+
+.legendText {
+    font-size: 11px;
+}
+
+.unitText {
+    font-size: 10px;
+}
+
+.plotText {
+    font-size: 20px;
+}
+
+/* Map legend */
+
+.legend {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+#mapInfo-container {
+    background: white;
+    height: 75px;
+}
+
+.legend h4 {
+    margin: 0 0 5px;
+    color: #bbb;
+}
+
+.legend h5 {
+    margin: 0 0 5px;
+    color: #755;
+}
+
+.legendbox {
+    line-height: 20px;
+    color: #555;
+    width: auto;
+}
+
+.legendbox i {
+    width: 30px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.85;
+}
+
+.legend, .temporal-legend {
+    /* padding: 10px 10px; */
+    font: 14px/16px;
+    font-family: 'proxima-nova', sans-serif;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); */
+    /* border-radius: 5px; */
+    width: 70px;
+    height: 73px;
+    position: absolute;
+    left: 5px;
+    top: 00px;
+}
+
+.symbolsContainer {
+    float: left;
+    margin-left: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.legendCircle {
+    border-radius: 100%;
+    border: 0.5px solid grey;
+    /* background: rgba(113, 133, 152, .6); */
+    display: inline-block;
+}
+
+.legendValue {
+    position: absolute;
+    /* top:5px; */
+    left: 0px;
+}
+
+.legend-container {
+    float: right;
+    margin: 00px 00px 0px 0px;
+    font-family: "proxima-nova", sans-serif;
+    position: absolute;
+    /* border: 1px solid lightgrey; */
+}
+#legend-container-info{
+    position: relative;
+    /* margin: 0px 0px 0px 0px; */
+    font-family: "proxima-nova", sans-serif;
+    width: 50%;
+    left: 5px;
+    top: 5px;
+    
+}
+
+
+table.info {
+    font: 12px;
+    font-family: 'proxima-nova', sans-serif;
+    border: 1px solid lightgrey;
+    border-collapse: collapse;
+}
+
+table.info th, td {
+    border: 1px solid lightgrey;
+    padding: 2px;
+}
+
+table.info td.num {
+    text-align: right;
+}
+
+/* for new trip plots */
+
+.g-line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.g-area {
+    fill-opacity: .1;
+}
+
+.g-label-value {
+    font-weight: 500;
+}
+
+.g-label-year, .g-label-value {
+    font-size: 10px;
+}
+
+.g-overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.g-axis path, .g-axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.g-y.g-axis line {
+    stroke: #fff;
+    stroke-dasharray: 2, 2;
+}
+
+.g-y.g-axis path {
+    display: none;
+}
+
+/* for gas prices plot */
+
+.dot {
+    fill: #66A;
+    stroke: #66A;
+}
+
+/* highlighting dots in gas prices plot */
+
+.dot.scanned {
+    fill: #F99;
+    stroke: #855;
+}
+
+.gas_highlight {
+    fill: #F77;
+    stroke: #955;
+}
+
+/* help carousel control */
+
+.carousel-inner>.item {
+    -webkit-transition: 10s ease-in-out left;
+    -moz-transition: 10s ease-in-out left;
+    -o-transition: 10s ease-in-out left;
+    transition: 10s ease-in-out left;
+}
+
+/*remove shading from carousel controls */
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none !important;
+    filter: none !important;
+}
+
+.carousel-indicators {
+    bottom: -22px;
+    color: grey;
+}
+
+.carousel-indicators li {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border: none;
+    background-color: #656565;
+}
+
+.carousel-indicators .active {
+    width: 7px;
+    height: 7px;
+    background-color: #aaa;
+}
+
+.carousel-control.left .glyphicon {
+    left: 0;
+    margin-left: 0;
+    color: grey;
+}
+
+.carousel-control.right .glyphicon {
+    right: 0;
+    margin-right: 0;
+    color: grey;
+}
+
+.modal-header {
+    color: grey;
+    padding: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    border-bottom: 1px solid grey;
+}
+
+.modal-footer {
+    color: grey;
+    padding: 15px;
+    text-align: center;
+    /*margin-left: 15px;
+    margin-right: 15px;*/
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
+/* close button style */
+
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #FFF;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=45);
+    opacity: .5;
+}
+
+.carousel-indicators li {
+    background: #666;
+}
+
+.carousel-indicators .active {
+    background: #111;
+}
+
+/* OLD STUFF -- delete? */
+
+/* tooltips */
+
+/* .tooltip {
+    position: relative;
+}
+.tooltip > div {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -150px;
+    width: 300px;
+
+}
+.tooltipContent {
+    background-color: #eee;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 5px;
+} */
+
+/* For the ticks on the bar plots */
+
+.bartick {
+    fill: black;
+    font-size: 10px;
+    font-family: 'proxima-nova', sans-serif;
+    text-anchor: end;
+}
+
+.leaflet-popup-content-wrapper {
+    width: 150px;
+    height: 150px;
+    margin: 1;
+}
+
+.leaflet-popup-content {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.maplot-container {
+    width: 50%;
+    height: 50%;
+    margin: 50px;
+    padding: 0;
+}
+
+.line-stroke {
+    fill: none;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    /* background: none;
+    box-shadow: none; */
+}
+
+/* Sidebar */
+
+.collapsible, .collapsible:active {
+    background-color: #C8C6C6;
+    color: #111;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border-bottom: solid lightgray 1px;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    overflow: hidden;
+}
+
+.collapsible:hover {
+    overflow: hidden;
+    background-color: #555;
+    -o-transition: .5s;
+    -ms-transition: .5s;
+    -moz-transition: .5s;
+    -webkit-transition: .5s;
+    transition: .5s;
+}
+
+.sidebar-content {
+/*    padding: 0 10px;*/
+    overflow: hidden;
+    background-color: #f1f1f1;
+    height: 0;
+}
+
+.content-hidden {
+    -webkit-transition: all 2s ease !important;
+    -moz-transition: all 2s ease !important;
+    -o-transition: all 2s ease !important;
+    -ms-transition: all 2s ease !important;
+    transition: all 2s ease !important;
+}
+
+.content-display {
+    height: auto;
+}
+
+#sidebar-close-button {
+    top: 10px !important;
+}
+
+#side-bar-wrapper {
+    /* width: 400px; */
+    max-width: 400px;
+    min-width: 200px;
+    display: inline-block;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 500;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 0px;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: lightgrey;
+}
+
+.sidenav a {
+    /* padding: 5px 5px 5px 5px; */
+    text-decoration: none;
+    font-size: 40px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #111;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.title-bar .closebtn {
+    position: absolute;
+    top: -2px;
+    right: 8px;
+    font-size: 20px;
+    /* margin-left: 50px;  */
+}
+
+.title-bar .closebtn .hover {
+    color: #05053B;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+/* Mini sub menu toggle button */
+
+.mini-submenu {
+    margin: 0;
+    display: none;
+    background-color: white;
+    border: 0px solid rgba(0, 0, 0, 0.9);
+    border-radius: 4px;
+    padding: 9px;
+    position: relative;
+    z-index: 900;
+    width: 42px;
+    height: 100%;
+    box-shadow: 2px 2px 5px gray;
+    float: left;
+}
+
+.mini-submenu:hover {
+    cursor: pointer;
+}
+
+.mini-submenu .icon-bar {
+    border-radius: 1px;
+    display: block;
+    height: 2px;
+    width: 22px;
+    margin-top: 3px;
+}
+
+.mini-submenu .icon-bar {
+    background-color: #000;
+}
+
+/* buttons */
+
+.btn-outline-green {
+    background-color: #9f9
+}
+
+.btn-outline-red {
+    background-color: #F0F0F0
+}
+
+.leaflet-control-layers {
+    width: 170px;
+    position: absolute;
+    left: 230px;
+    top: 0px;
+    padding: 5px, 5px, 5px, 5px;
+}
+
+.leaflet-control-layers-toggle {
+    /* background: rgba(255, 255, 255, 0.5); */
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 5px, 5px, 5px, 5px;
+}
+
+/* toggle switch button styles */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 85px;
+    height: 28px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 30px;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 16px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.share-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    border: 1px solid black;
+}
+
+#toolbar_btn.toleft {
+    left: 0px;
+}
+
+#map-container.toleft {
+    left: 0px;
+}
+
+#toolbar_btn {
+    height: 190px;
+    width: 30px;
+    background: #000;
+    box-shadow: 1px 0 2px rgba(0, 0, 0, .3);
+    position: absolute;
+    top: 40%;
+    left: 0px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border: 1px solid #333;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#toolbar_btn span {
+    color: #fff;
+    display: inline-block;
+    position: relative;
+    transform: rotate(90deg);
+    top: 85px;
+    left: -60px;
+    font-size: 15px;
+    font-family: 'proxima-nova', sans-serif;
+}
+
+/* Select dropdown styling */
+
+#map-visual-select {
+    display: block;
+    font-size: 16px;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 700;
+    color: #444;
+    line-height: 1.3;
+    padding: .6em 1.4em .5em .8em;
+    width: 90%;
+    max-width: 90%;
+    box-sizing: border-box;
+    margin: 0 10px;
+    border: 1px solid #aaa;
+    box-shadow: 0 1px 0 1px rgba(0, 0, 0, .04);
+    border-radius: .5em;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-image: url('../imgs/br_down_tiny_x.png');
+    background-repeat: no-repeat, repeat;
+    background-position: right 0.8em top 50%, 0 0;
+    background-size: .80em auto, 100%;
+    appearance: none;
+    background-color: #fff;
+    background-repeat: no-repeat, repeat;
+}
+
+#map-visual-select::-ms-expand {
+    display: none;
+}
+
+#map-visual-select:hover {
+    border-color: #888;
+}
+
+#map-visual-select:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+    box-shadow: 0 0 0 3px -moz-mac-focusring;
+    color: #222;
+    outline: none;
+}
+
+#map-visual-select option {
+    font-weight: normal;
+}
+
+#mapInfo-container {
+    height: 60px;
+}
+
+#basemap-select {
+    display: block;
+    font-size: 16px;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 700;
+    color: #444;
+    line-height: 1.3;
+    padding: .6em 1.4em .5em .8em;
+    width: 90%;
+    max-width: 90%;
+    box-sizing: border-box;
+    margin: 0 10px;
+    border: 1px solid #aaa;
+    box-shadow: 0 1px 0 1px rgba(0, 0, 0, .04);
+    border-radius: .5em;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-image: url('../imgs/br_down_tiny_x.png');
+    background-repeat: no-repeat, repeat;
+    background-position: right 0.8em top 50%, 0 0;
+    background-size: .80em auto, 100%;
+    appearance: none;
+    background-color: #fff;
+    background-repeat: no-repeat, repeat;
+}
+
+#basemap-select::-ms-expand {
+    display: none;
+}
+
+#basemap-select:hover {
+    border-color: #888;
+}
+
+#basemap-select:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+    box-shadow: 0 0 0 3px -moz-mac-focusring;
+    color: #222;
+    outline: none;
+}
+
+#basemap-select option {
+    font-weight: normal;
+}
+
+.collapsible:hover {
+    background: #F0F0F0 !important;
+}
+
+/* .popup {
+    position: relative;
+    left: 500px;
+    top: 200px;
+    height: 20px;
+    width: 20px;
+} */
+
+/* The actual popup (appears on top) */
+
+.popuptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: relative;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    /* margin-left: -80px; */
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+
+/* Add animation (fade in the popup) */
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.targetline {
+    fill: none;
+    stroke: red;
+    stroke-width: 2px;
+    stroke-dasharray: 4 4;
+}
+
+.baseline {
+    fill: none;
+    stroke: orange;
+    stroke-width: 2px;
+    stroke-dasharray: 4 4;
+}
+
+/* Login */
+
+.card-signin {
+    border: none;
+    height: 470px;
+}
+
+.card-signin .card-title {
+    margin-bottom: 2rem;
+    font-weight: 300;
+    font-size: 1.5rem;
+}
+
+.card-signin {
+    padding: 2rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.form-signin {
+    width: 100%;
+}
+
+.form-signin .btn {
+    font-size: 80%;
+    border-radius: 5rem;
+    letter-spacing: .1rem;
+    font-weight: bold;
+    padding: 1rem;
+    transition: all 0.2s;
+}
+
+.form-label-group {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.form-label-group input {
+    height: auto;
+    border-radius: 2rem;
+}
+
+.form-label-group>input, .form-label-group>label {
+    padding: var(--input-padding-y) var(--input-padding-x);
+}
+
+.form-label-group>label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
+    /* Override default `<label>` margin */
+    line-height: 1.5;
+    color: #495057;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    transition: all .1s ease-in-out;
+}
+
+.form-label-group input::-webkit-input-placeholder {
+    color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+    color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+    color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+    color: transparent;
+}
+
+.form-label-group input::placeholder {
+    color: transparent;
+}
+
+.form-label-group input:not(:placeholder-shown) {
+    padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+    padding-bottom: calc(var(--input-padding-y) / 3);
+}
+
+.form-label-group input:not(:placeholder-shown)~label {
+    padding-top: calc(var(--input-padding-y) / 3);
+    padding-bottom: calc(var(--input-padding-y) / 3);
+    font-size: 12px;
+    color: #777;
+}
+
+.btn-google {
+    color: white;
+    background-color: #ea4335!important;
+}
+
+.btn-facebook {
+    color: white;
+    background-color: #3b5998!important;
+}
+
+.form-control-login {
+    height: 50px!important;
+    width: 90%!important;
+}
+
+.plot-select {
+    width: calc(90% - 30px);
+    border-style: inset!important;
+    border-radius: 1px!important;
+}
+
+/* Fallback for Edge
+  -------------------------------------------------- */
+
+@supports (-ms-ime-align: auto) {
+    .form-label-group>label {
+        display: none;
+    }
+    .form-label-group input::-ms-input-placeholder {
+        color: #777;
+    }
+}
+
+/* Fallback for IE
+  -------------------------------------------------- */
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .form-label-group>label {
+        display: none;
+    }
+    .form-label-group input:-ms-input-placeholder {
+        color: #777;
+    }
+}
+
+/* Tutorials CSS */
+
+.introjs-tooltip {
+    max-height: 700px;
+}
+
+/* incard popup */
+
+#popup {
+    display: none;
+    width: 400px;
+    height:400px; 
+    background: white;
+    overflow-y: auto;
+    
+    position: absolute;
+    top: 0px;
+    opacity: 1;
+    scrollbar-width: none !important;
+    border: thick solid #A4A4A4;
+    /* z-index: 9999; */
+    /* box-shadow: 6px 6px 5px #888888; */
+    /* border-radius:6px;border:1px solid #4f4f4f; */
+}
+
+#popup_bar {
+    width: 100%;
+    /* background-color:#aaff66; */
+    position: relative;
+    top: 0;
+    /* border-radius:6px 6px 0 0;  */
+    text-align: left;
+    /* height:100px; */
+    cursor: move;
+    background: rgb(217, 217, 217);
+}
+#popup-info-container{
+    width:100%;
+    height:40%; 
+    background: white;
+    overflow: auto;
+}
+#popup_text{
+    width:98%;
+    height:40%; 
+    background: white;
+    overflow: auto; 
+}
+#popup-bar-title{
+    font-size:15px; 
+    width: 150px; 
+    margin: 5px 5px 5px 5px;
+}
+#btn_close {
+    width: 10px;
+    /* background-color:#aaff66; */
+    position: absolute;
+    top: 0px;
+    /* text-align: right; */
+    float:right;
+    font-size:15px;
+    right:5px;
+
+}
+.body-text {
+    float: right;
+    background-color:white;
+    margin: 5px 5px 5px 5px;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 15px;
+    position: absolute;
+    scrollbar-width: none !important;
+    border: solid!important;
+    border-color: #dfdfdf!important;
+    border-width: 0.5px!important;
+    resize: none;
+    opacity: 1;
+}
+
+.body-text::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.body-text-container {
+    float: right;
+    margin: 5px 5px 5px 5px;
+    position: relative;
+    /* border-color: #f0f0f0; */
+}
+.card-popup-text {
+    float: right;
+    background-color:white;
+    margin: 5px 5px 5px 5px;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 15px;
+    position: absolute;
+    scrollbar-width: none !important;
+    border: solid!important;
+    border-color: #dfdfdf!important;
+    border-width: 0px!important;
+    resize: none;
+    opacity: 1;
+}
+.download-tag{
+    margin: 0;
+    padding: 0;
+}
+
+.download-button{
+    float: right;
+}
+
+hr{
+    display: block; 
+    margin: 0px !important;
+    border-color: lightgray !important;
+    margin-top: 5pt !important;  
+/*    margin-start: auto;*/
+/*    margin-end: auto; */
+    overflow: hidden; 
+    margin-left: 0px;
+    margin-right: 0px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: rgba(255,255,255,0);
+	border: 1px solid rgba(255,255,255,0);
+	border-radius: 3px;
+	color: #000;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0);
+	}

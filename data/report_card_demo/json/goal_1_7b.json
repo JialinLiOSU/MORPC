@@ -1,0 +1,12 @@
+[
+    { "key": 2009, "Battery": 0, "Biomass": 97.6, "Heat": 0, "Hydro": 5.2, "SolarPV": 0.06912, "SolidWaste": 0, "Wind": 0 },
+    { "key": 2010, "Battery": 0, "Biomass": 100.3, "Heat": 0, "Hydro": 5.2, "SolarPV": 0.225775, "SolidWaste": 5, "Wind": 0.11 },
+    { "key": 2011, "Battery": 0, "Biomass": 199.7, "Heat": 0, "Hydro": 5.2, "SolarPV": 1.086428, "SolidWaste": 5, "Wind": 0.11 },
+    { "key": 2012, "Battery": 0, "Biomass": 199.7, "Heat": 0, "Hydro": 5.2, "SolarPV": 3.593933, "SolidWaste": 5, "Wind": 0.11 },
+    { "key": 2013, "Battery": 0, "Biomass": 197, "Heat": 0, "Hydro": 5.2, "SolarPV": 10.694833, "SolidWaste": 5, "Wind": 3.51 },
+    { "key": 2014, "Battery": 4, "Biomass": 197.85, "Heat": 0, "Hydro": 5.2, "SolarPV": 12.707383, "SolidWaste": 5, "Wind": 6.91 },
+    { "key": 2015, "Battery": 4, "Biomass": 197.85, "Heat": 0, "Hydro": 5.2, "SolarPV": 14.714778, "SolidWaste": 5, "Wind": 6.91 },
+    { "key": 2016, "Battery": 4, "Biomass": 197.85, "Heat": 1, "Hydro": 5.2, "SolarPV": 15.827436, "SolidWaste": 5, "Wind": 6.91 },
+    { "key": 2017, "Battery": 4, "Biomass": 197.85, "Heat": 1, "Hydro": 0, "SolarPV": 19.211056, "SolidWaste": 5, "Wind": 6.91 },
+    { "key": 2018, "Battery": 4, "Biomass": 197.85, "Heat": 1, "Hydro": 0, "SolarPV": 22.622596, "SolidWaste": 5, "Wind": 11.41 }
+]

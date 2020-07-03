@@ -1,0 +1,105 @@
+{
+	"schema_name": "ozone_schema",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "index",
+		"field_type": "integer",
+        "primary_key": "true"
+	}, {
+		"field_name": "state_code",
+		"field_type": "string"
+	}, {
+		"field_name": "county_code",
+		"field_type": "string"
+	},{
+		"field_name": "site_number",
+		"field_type": "string"
+	},{
+		"field_name": "parameter_code",
+		"field_type": "string"
+	}, {
+		"field_name": "poc",
+		"field_type": "string"
+	}, {
+		"field_name": "latitude",
+		"field_type": "decimal"
+	},{
+		"field_name": "longitude",
+		"field_type": "decimal"
+	},{
+		"field_name": "datum",
+		"field_type": "string"
+	},{
+		"field_name": "parameter",
+		"field_type": "string"
+	},{
+		"field_name": "sample_duration",
+		"field_type": "string"
+	}, {
+		"field_name": "pollutant_standard",
+		"field_type": "string"
+	},{
+		"field_name": "date_local",
+		"field_type": "date"
+	},{
+		"field_name": "units_of_measure",
+		"field_type": "string"
+	},{
+		"field_name": "event_type",
+		"field_type": "string"
+	},{
+		"field_name": "observation_count",
+		"field_type": "integer"
+	}, {
+		"field_name": "observation_percent",
+		"field_type": "integer"
+	},{
+		"field_name": "validity_indicator",
+		"field_type": "string"
+	},{
+		"field_name": "arithmetic_mean",
+		"field_type": "decimal"
+	},{
+		"field_name": "first_max_value",
+		"field_type": "decimal"
+	},{
+		"field_name": "first_max_hour",
+		"field_type": "integer"
+	},{
+		"field_name": "aqi",
+		"field_type": "string"
+	},{
+		"field_name": "method_code",
+		"field_type": "string"
+	},{
+		"field_name": "method",
+		"field_type": "string"
+	}, {
+		"field_name": "local_site_name",
+		"field_type": "string"
+	},{
+		"field_name": "site_address",
+		"field_type": "string"
+	},{
+		"field_name": "state",
+		"field_type": "string"
+	},{
+		"field_name": "county",
+		"field_type": "string"
+	}, {
+		"field_name": "city",
+		"field_type": "string"
+	},{
+		"field_name": "cbsa_code",
+		"field_type": "string"
+	},{
+		"field_name": "cbsa",
+		"field_type": "string"
+	},{
+		"field_name": "date_of_last_change",
+		"field_type": "date"
+	},{
+		"field_name": "id",
+		"field_type": "integer"
+	}]
+}

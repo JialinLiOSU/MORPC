@@ -1,0 +1,30 @@
+{
+	"schema_name": "1_5_region",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "year",
+		"field_type": "long",
+        "primary_key": "true"
+	}, {
+		"field_name": "cng",
+		"field_type": "decimal"
+	}, {
+		"field_name": "e85",
+		"field_type": "decimal"
+	},{
+		"field_name": "elec",
+		"field_type": "decimal"
+	},{
+		"field_name": "lng",
+		"field_type": "decimal"
+	}, {
+		"field_name": "lpg",
+		"field_type": "decimal"
+	},{
+		"field_name": "bd",
+		"field_type": "decimal"
+	},{
+		"field_name": "hy",
+		"field_type": "decimal"
+	}]
+}

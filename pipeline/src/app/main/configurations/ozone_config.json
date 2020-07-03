@@ -1,0 +1,12 @@
+{
+
+    "dataset_config_name": "ozone_config",
+    "config": {
+        "ingestion_type": "upload",
+        "file_type": "xlsx",
+        "temporal_identifier": "2019",
+        "email_address": "mani.46@osu.edu"
+    }
+
+}
+

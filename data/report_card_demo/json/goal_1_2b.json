@@ -1,0 +1,4 @@
+[
+    { "key": 2012, "Biked": 0.00492, "PublicTransit": 0.01923, "Walked": 0.02122 },
+    { "key": 2016, "Biked": 0.00524, "PublicTransit": 0.02061, "Walked": 0.02228 }
+]

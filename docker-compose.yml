@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+  frontend:
+    build: 
+      context: ./frontend
+    container_name: 'frontend'
+    restart: 'always'
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - backend 
+  database:
+    build:
+      context: ./server/postgres
+    container_name: 'database'
+    restart: 'always'
+    ports:
+      - "5432:5432"
+    volumes: 
+      - /usr/local/var/postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+  backend:
+    build: 
+      context: ./server/rest
+    container_name: 'backend'
+    restart: 'always'
+    ports:
+      - "5000:5000"
+    links:
+      - pipeline
+      - database 
+  pipeline:
+    build: 
+      context: ./pipeline/src
+    container_name: 'pipeline'
+    restart: 'always'
+    ports:
+      - "2000:2000"
+    links:
+      - database
+

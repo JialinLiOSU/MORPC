@@ -1,0 +1,1660 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+#EPA Ozone: Daily Summary Data
+```{r}
+pacman::p_load(dplyr, tidyr)
+#2000
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2000.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2000.csv") 
+Ozone_2000 <- read.table("daily_44201_2000.csv", sep=",")
+
+names(Ozone_2000) <- Ozone_2000 %>% slice(1) %>% unlist()
+Ozone_2000 <- Ozone_2000 %>% slice(-1)
+
+MORPC_Region_Ozone_2000 <- Ozone_2000 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2000 <- MORPC_Region_Ozone_2000[!duplicated(MORPC_Region_Ozone_2000[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2000 <- MORPC_Region_Ozone_Exceedances_2000 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2000$Year <- 2000
+
+#2001
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2001.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2001.csv") 
+Ozone_2001 <- read.table("daily_44201_2001.csv", sep=",")
+
+names(Ozone_2001) <- Ozone_2001 %>% slice(1) %>% unlist()
+Ozone_2001 <- Ozone_2001 %>% slice(-1)
+
+MORPC_Region_Ozone_2001 <- Ozone_2001 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2001 <- MORPC_Region_Ozone_2001[!duplicated(MORPC_Region_Ozone_2001[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2001 <- MORPC_Region_Ozone_Exceedances_2001 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2001$Year <- 2001
+
+#2002
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2002.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2002.csv") 
+Ozone_2002 <- read.table("daily_44201_2002.csv", sep=",")
+
+names(Ozone_2002) <- Ozone_2002 %>% slice(1) %>% unlist()
+Ozone_2002 <- Ozone_2002 %>% slice(-1)
+
+MORPC_Region_Ozone_2002 <- Ozone_2002 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2002 <- MORPC_Region_Ozone_2002[!duplicated(MORPC_Region_Ozone_2002[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2002 <- MORPC_Region_Ozone_Exceedances_2002 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2002$Year <- 2002
+
+#2003
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2003.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2003.csv") 
+Ozone_2003 <- read.table("daily_44201_2003.csv", sep=",")
+
+names(Ozone_2003) <- Ozone_2003 %>% slice(1) %>% unlist()
+Ozone_2003 <- Ozone_2003 %>% slice(-1)
+
+MORPC_Region_Ozone_2003 <- Ozone_2003 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2003 <- MORPC_Region_Ozone_2003[!duplicated(MORPC_Region_Ozone_2003[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2003 <- MORPC_Region_Ozone_Exceedances_2003 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2003$Year <- 2003
+
+#2004
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2004.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2004.csv") 
+Ozone_2004 <- read.table("daily_44201_2004.csv", sep=",")
+
+names(Ozone_2004) <- Ozone_2004 %>% slice(1) %>% unlist()
+Ozone_2004 <- Ozone_2004 %>% slice(-1)
+
+MORPC_Region_Ozone_2004 <- Ozone_2004 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2004 <- MORPC_Region_Ozone_2004[!duplicated(MORPC_Region_Ozone_2004[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2004 <- MORPC_Region_Ozone_Exceedances_2004 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2004$Year <- 2004
+
+#2005
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2005.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2005.csv") 
+Ozone_2005 <- read.table("daily_44201_2005.csv", sep=",")
+
+names(Ozone_2005) <- Ozone_2005 %>% slice(1) %>% unlist()
+Ozone_2005 <- Ozone_2005 %>% slice(-1)
+
+MORPC_Region_Ozone_2005 <- Ozone_2005 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2005 <- MORPC_Region_Ozone_2005[!duplicated(MORPC_Region_Ozone_2005[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2005 <- MORPC_Region_Ozone_Exceedances_2005 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2005$Year <- 2005
+
+#2006
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2006.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2006.csv") 
+Ozone_2006 <- read.table("daily_44201_2006.csv", sep=",")
+
+names(Ozone_2006) <- Ozone_2006 %>% slice(1) %>% unlist()
+Ozone_2006 <- Ozone_2006 %>% slice(-1)
+
+MORPC_Region_Ozone_2006 <- Ozone_2006 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2006 <- MORPC_Region_Ozone_2006[!duplicated(MORPC_Region_Ozone_2006[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2006 <- MORPC_Region_Ozone_Exceedances_2006 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2006$Year <- 2006
+
+#2007
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2007.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2007.csv") 
+Ozone_2007 <- read.table("daily_44201_2007.csv", sep=",")
+
+names(Ozone_2007) <- Ozone_2007 %>% slice(1) %>% unlist()
+Ozone_2007 <- Ozone_2007 %>% slice(-1)
+
+MORPC_Region_Ozone_2007 <- Ozone_2007 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2007 <- MORPC_Region_Ozone_2007[!duplicated(MORPC_Region_Ozone_2007[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2007 <- MORPC_Region_Ozone_Exceedances_2007 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2007$Year <- 2007
+
+#2008
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2008.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2008.csv") 
+Ozone_2008 <- read.table("daily_44201_2008.csv", sep=",")
+
+names(Ozone_2008) <- Ozone_2008 %>% slice(1) %>% unlist()
+Ozone_2008 <- Ozone_2008 %>% slice(-1)
+
+MORPC_Region_Ozone_2008 <- Ozone_2008 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2008 <- MORPC_Region_Ozone_2008[!duplicated(MORPC_Region_Ozone_2008[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2008 <- MORPC_Region_Ozone_Exceedances_2008 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2008$Year <- 2008
+
+#2009
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2009.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2009.csv") 
+Ozone_2009 <- read.table("daily_44201_2009.csv", sep=",")
+
+names(Ozone_2009) <- Ozone_2009 %>% slice(1) %>% unlist()
+Ozone_2009 <- Ozone_2009 %>% slice(-1)
+
+MORPC_Region_Ozone_2009 <- Ozone_2009 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2009 <- MORPC_Region_Ozone_2009[!duplicated(MORPC_Region_Ozone_2009[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2009 <- MORPC_Region_Ozone_Exceedances_2009 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2009$Year <- 2009
+
+#2010
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2010.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2010.csv") 
+Ozone_2010 <- read.table("daily_44201_2010.csv", sep=",")
+
+names(Ozone_2010) <- Ozone_2010 %>% slice(1) %>% unlist()
+Ozone_2010 <- Ozone_2010 %>% slice(-1)
+
+MORPC_Region_Ozone_2010 <- Ozone_2010 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2010 <- MORPC_Region_Ozone_2010[!duplicated(MORPC_Region_Ozone_2010[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2010 <- MORPC_Region_Ozone_Exceedances_2010 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2010$Year <- 2010
+
+#2011
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2011.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2011.csv") 
+Ozone_2011 <- read.table("daily_44201_2011.csv", sep=",")
+
+names(Ozone_2011) <- Ozone_2011 %>% slice(1) %>% unlist()
+Ozone_2011 <- Ozone_2011 %>% slice(-1)
+
+MORPC_Region_Ozone_2011 <- Ozone_2011 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2011 <- MORPC_Region_Ozone_2011[!duplicated(MORPC_Region_Ozone_2011[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2011 <- MORPC_Region_Ozone_Exceedances_2011 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2011$Year <- 2011
+
+#2012
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2012.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2012.csv") 
+Ozone_2012 <- read.table("daily_44201_2012.csv", sep=",")
+
+names(Ozone_2012) <- Ozone_2012 %>% slice(1) %>% unlist()
+Ozone_2012 <- Ozone_2012 %>% slice(-1)
+
+MORPC_Region_Ozone_2012 <- Ozone_2012 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2012 <- MORPC_Region_Ozone_2012[!duplicated(MORPC_Region_Ozone_2012[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2012 <- MORPC_Region_Ozone_Exceedances_2012 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2012$Year <- 2012
+
+#2013
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2013.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2013.csv") 
+Ozone_2013 <- read.table("daily_44201_2013.csv", sep=",")
+
+names(Ozone_2013) <- Ozone_2013 %>% slice(1) %>% unlist()
+Ozone_2013 <- Ozone_2013 %>% slice(-1)
+
+MORPC_Region_Ozone_2013 <- Ozone_2013 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2013 <- MORPC_Region_Ozone_2013[!duplicated(MORPC_Region_Ozone_2013[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2013 <- MORPC_Region_Ozone_Exceedances_2013 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2013$Year <- 2013
+
+#2014
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2014.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2014.csv") 
+Ozone_2014 <- read.table("daily_44201_2014.csv", sep=",")
+
+names(Ozone_2014) <- Ozone_2014 %>% slice(1) %>% unlist()
+Ozone_2014 <- Ozone_2014 %>% slice(-1)
+
+MORPC_Region_Ozone_2014 <- Ozone_2014 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2014 <- MORPC_Region_Ozone_2014[!duplicated(MORPC_Region_Ozone_2014[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2014 <- MORPC_Region_Ozone_Exceedances_2014 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2014$Year <- 2014
+
+#2015
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2015.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2015.csv") 
+Ozone_2015 <- read.table("daily_44201_2015.csv", sep=",")
+
+names(Ozone_2015) <- Ozone_2015 %>% slice(1) %>% unlist()
+Ozone_2015 <- Ozone_2015 %>% slice(-1)
+
+MORPC_Region_Ozone_2015 <- Ozone_2015 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2015 <- MORPC_Region_Ozone_2015[!duplicated(MORPC_Region_Ozone_2015[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2015 <- MORPC_Region_Ozone_Exceedances_2015 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2015$Year <- 2015
+
+#2016
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2016.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2016.csv") 
+Ozone_2016 <- read.table("daily_44201_2016.csv", sep=",")
+
+names(Ozone_2016) <- Ozone_2016 %>% slice(1) %>% unlist()
+Ozone_2016 <- Ozone_2016 %>% slice(-1)
+
+MORPC_Region_Ozone_2016 <- Ozone_2016 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2016 <- MORPC_Region_Ozone_2016[!duplicated(MORPC_Region_Ozone_2016[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2016 <- MORPC_Region_Ozone_Exceedances_2016 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2016$Year <- 2016
+
+#2017
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2017.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2017.csv") 
+Ozone_2017 <- read.table("daily_44201_2017.csv", sep=",")
+
+names(Ozone_2017) <- Ozone_2017 %>% slice(1) %>% unlist()
+Ozone_2017 <- Ozone_2017 %>% slice(-1)
+
+MORPC_Region_Ozone_2017 <- Ozone_2017 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2017 <- MORPC_Region_Ozone_2017[!duplicated(MORPC_Region_Ozone_2017[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2017 <- MORPC_Region_Ozone_Exceedances_2017 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2017$Year <- 2017
+
+#2018
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2018.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2018.csv") 
+Ozone_2018 <- read.table("daily_44201_2018.csv", sep=",")
+
+names(Ozone_2018) <- Ozone_2018 %>% slice(1) %>% unlist()
+Ozone_2018 <- Ozone_2018 %>% slice(-1)
+
+MORPC_Region_Ozone_2018 <- Ozone_2018 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2018 <- MORPC_Region_Ozone_2018[!duplicated(MORPC_Region_Ozone_2018[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2018 <- MORPC_Region_Ozone_Exceedances_2018 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2018$Year <- 2018
+
+#2019
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_44201_2019.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_44201_2019.csv") 
+Ozone_2019 <- read.table("daily_44201_2019.csv", sep=",")
+
+names(Ozone_2019) <- Ozone_2019 %>% slice(1) %>% unlist()
+Ozone_2019 <- Ozone_2019 %>% slice(-1)
+
+MORPC_Region_Ozone_2019 <- Ozone_2019 %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`1st Max Value Num` > 0.07) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 0.07 & `1st Max Value Num` <= 0.085, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 0.085 & `1st Max Value Num` <= 0.105, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 0.105, "Very Unhealthy", "Error"))))
+  
+MORPC_Region_Ozone_Exceedances_2019 <- MORPC_Region_Ozone_2019[!duplicated(MORPC_Region_Ozone_2019[c("County Code", 'Date Local')]),]
+
+MORPC_Region_Ozone_Exceedances_2019 <- MORPC_Region_Ozone_Exceedances_2019 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_Ozone_Exceedances_2019$Year <- 2019
+
+#Combine all 
+MORPC_Region_Ozone_Exceedances_2000_2019 <- rbind(MORPC_Region_Ozone_Exceedances_2000, MORPC_Region_Ozone_Exceedances_2001, MORPC_Region_Ozone_Exceedances_2002, MORPC_Region_Ozone_Exceedances_2003, MORPC_Region_Ozone_Exceedances_2004, MORPC_Region_Ozone_Exceedances_2005, MORPC_Region_Ozone_Exceedances_2006, MORPC_Region_Ozone_Exceedances_2007, MORPC_Region_Ozone_Exceedances_2008, MORPC_Region_Ozone_Exceedances_2009, MORPC_Region_Ozone_Exceedances_2010, MORPC_Region_Ozone_Exceedances_2011, MORPC_Region_Ozone_Exceedances_2012, MORPC_Region_Ozone_Exceedances_2013, MORPC_Region_Ozone_Exceedances_2014, MORPC_Region_Ozone_Exceedances_2015, MORPC_Region_Ozone_Exceedances_2016, MORPC_Region_Ozone_Exceedances_2017, MORPC_Region_Ozone_Exceedances_2018, MORPC_Region_Ozone_Exceedances_2019)
+
+Region_Exceedances_2000_2019 <- MORPC_Region_Ozone_Exceedances_2000_2019 %>% 
+  group_by(Year, AQI_Category) %>% 
+  summarise(Unhealthy = sum(Number_Exceedances),
+            "Unhealthy for Sensitive Groups" = sum(Number_Exceedances),
+            "Very Unhealthy" = sum(Number_Exceedances)) %>% 
+  mutate("County Code" = "REGION") %>% 
+  mutate("County Name" = "REGION") %>% 
+  select(`County Code`, `County Name`, Year, Unhealthy, `Unhealthy for Sensitive Groups`, `Very Unhealthy`)
+
+MORPC_Region_Ozone_Exceedances_2000_2019 <- MORPC_Region_Ozone_Exceedances_2000_2019 %>% 
+  spread(AQI_Category, Number_Exceedances) %>% 
+    replace(is.na(.), 0)
+
+#Combine county and regional
+
+MORPC_Region_County_Ozone_Exceedances_2000_2019 <- rbind(MORPC_Region_Ozone_Exceedances_2000_2019, Region_Exceedances_2000_2019)
+
+   
+```
+
+#PM2.5
+```{r}
+pacman::p_load(dplyr, tidyr)
+
+#2000
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2000.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2000.csv") 
+PM2.5_2000_FRM <- read.table("daily_88101_2000.csv", sep=",")
+
+names(PM2.5_2000_FRM) <- PM2.5_2000_FRM %>% slice(1) %>% unlist()
+PM2.5_2000_FRM <- PM2.5_2000_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2000 <- PM2.5_2000_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>% #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2000 <- MORPC_Region_PM2.5_2000[!duplicated(MORPC_Region_PM2.5_2000[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2000 <- MORPC_Region_PM2.5_Exceedances_2000 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2000$Year <- 2000
+
+#2001
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2001.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2001.csv") 
+PM2.5_2001_FRM <- read.table("daily_88101_2001.csv", sep=",")
+
+names(PM2.5_2001_FRM) <- PM2.5_2001_FRM %>% slice(1) %>% unlist()
+PM2.5_2001_FRM <- PM2.5_2001_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2001 <- PM2.5_2001_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+    subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2001 <- MORPC_Region_PM2.5_2001[!duplicated(MORPC_Region_PM2.5_2001[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2001 <- MORPC_Region_PM2.5_Exceedances_2001 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2001$Year <- 2001
+
+#2002
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2002.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2002.csv") 
+PM2.5_2002_FRM <- read.table("daily_88101_2002.csv", sep=",")
+
+names(PM2.5_2002_FRM) <- PM2.5_2002_FRM %>% slice(1) %>% unlist()
+PM2.5_2002_FRM <- PM2.5_2002_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2002 <- PM2.5_2002_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+      subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2002 <- MORPC_Region_PM2.5_2002[!duplicated(MORPC_Region_PM2.5_2002[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2002 <- MORPC_Region_PM2.5_Exceedances_2002 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2002$Year <- 2002
+
+#2003
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2003.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2003.csv") 
+PM2.5_2003_FRM <- read.table("daily_88101_2003.csv", sep=",")
+
+names(PM2.5_2003_FRM) <- PM2.5_2003_FRM %>% slice(1) %>% unlist()
+PM2.5_2003_FRM <- PM2.5_2003_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2003 <- PM2.5_2003_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+       subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2003 <- MORPC_Region_PM2.5_2003[!duplicated(MORPC_Region_PM2.5_2003[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2003 <- MORPC_Region_PM2.5_Exceedances_2003 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2003$Year <- 2003
+
+#2004
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2004.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2004.csv") 
+PM2.5_2004_FRM <- read.table("daily_88101_2004.csv", sep=",")
+
+names(PM2.5_2004_FRM) <- PM2.5_2004_FRM %>% slice(1) %>% unlist()
+PM2.5_2004_FRM <- PM2.5_2004_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2004 <- PM2.5_2004_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+      subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2004 <- MORPC_Region_PM2.5_2004[!duplicated(MORPC_Region_PM2.5_2004[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2004 <- MORPC_Region_PM2.5_Exceedances_2004 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2004$Year <- 2004
+
+#2005
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2005.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2005.csv") 
+PM2.5_2005_FRM <- read.table("daily_88101_2005.csv", sep=",")
+
+names(PM2.5_2005_FRM) <- PM2.5_2005_FRM %>% slice(1) %>% unlist()
+PM2.5_2005_FRM <- PM2.5_2005_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2005 <- PM2.5_2005_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+        subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2005 <- MORPC_Region_PM2.5_2005[!duplicated(MORPC_Region_PM2.5_2005[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2005 <- MORPC_Region_PM2.5_Exceedances_2005 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2005$Year <- 2005
+
+#2006
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2006.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2006.csv") 
+PM2.5_2006_FRM <- read.table("daily_88101_2006.csv", sep=",")
+
+names(PM2.5_2006_FRM) <- PM2.5_2006_FRM %>% slice(1) %>% unlist()
+PM2.5_2006_FRM <- PM2.5_2006_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2006 <- PM2.5_2006_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+          subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2006 <- MORPC_Region_PM2.5_2006[!duplicated(MORPC_Region_PM2.5_2006[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2006 <- MORPC_Region_PM2.5_Exceedances_2006 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2006$Year <- 2006
+
+#2007
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2007.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2007.csv") 
+PM2.5_2007_FRM <- read.table("daily_88101_2007.csv", sep=",")
+
+names(PM2.5_2007_FRM) <- PM2.5_2007_FRM %>% slice(1) %>% unlist()
+PM2.5_2007_FRM <- PM2.5_2007_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2007 <- PM2.5_2007_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2007 <- MORPC_Region_PM2.5_2007[!duplicated(MORPC_Region_PM2.5_2007[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2007 <- MORPC_Region_PM2.5_Exceedances_2007 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2007$Year <- 2007
+
+#2008
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2008.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2008.csv") 
+PM2.5_2008_FRM <- read.table("daily_88101_2008.csv", sep=",")
+
+names(PM2.5_2008_FRM) <- PM2.5_2008_FRM %>% slice(1) %>% unlist()
+PM2.5_2008_FRM <- PM2.5_2008_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2008 <- PM2.5_2008_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2008 <- MORPC_Region_PM2.5_2008[!duplicated(MORPC_Region_PM2.5_2008[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2008 <- MORPC_Region_PM2.5_Exceedances_2008 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2008$Year <- 2008
+
+#2009
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2009.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2009.csv") 
+PM2.5_2009_FRM <- read.table("daily_88101_2009.csv", sep=",")
+
+names(PM2.5_2009_FRM) <- PM2.5_2009_FRM %>% slice(1) %>% unlist()
+PM2.5_2009_FRM <- PM2.5_2009_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2009 <- PM2.5_2009_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2009 <- MORPC_Region_PM2.5_2009[!duplicated(MORPC_Region_PM2.5_2009[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2009 <- MORPC_Region_PM2.5_Exceedances_2009 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2009$Year <- 2009
+
+#2010
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2010.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2010.csv") 
+PM2.5_2010_FRM <- read.table("daily_88101_2010.csv", sep=",")
+
+names(PM2.5_2010_FRM) <- PM2.5_2010_FRM %>% slice(1) %>% unlist()
+PM2.5_2010_FRM <- PM2.5_2010_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2010 <- PM2.5_2010_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2010 <- MORPC_Region_PM2.5_2010[!duplicated(MORPC_Region_PM2.5_2010[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2010 <- MORPC_Region_PM2.5_Exceedances_2010 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2010$Year <- 2010
+
+#2011
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2011.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2011.csv") 
+PM2.5_2011_FRM <- read.table("daily_88101_2011.csv", sep=",")
+
+names(PM2.5_2011_FRM) <- PM2.5_2011_FRM %>% slice(1) %>% unlist()
+PM2.5_2011_FRM <- PM2.5_2011_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2011 <- PM2.5_2011_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2011 <- MORPC_Region_PM2.5_2011[!duplicated(MORPC_Region_PM2.5_2011[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2011 <- MORPC_Region_PM2.5_Exceedances_2011 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2011$Year <- 2011
+
+#2012
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2012.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2012.csv") 
+PM2.5_2012_FRM <- read.table("daily_88101_2012.csv", sep=",")
+
+names(PM2.5_2012_FRM) <- PM2.5_2012_FRM %>% slice(1) %>% unlist()
+PM2.5_2012_FRM <- PM2.5_2012_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2012 <- PM2.5_2012_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2012 <- MORPC_Region_PM2.5_2012[!duplicated(MORPC_Region_PM2.5_2012[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2012 <- MORPC_Region_PM2.5_Exceedances_2012 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2012$Year <- 2012
+
+#2013
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2013.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2013.csv") 
+PM2.5_2013_FRM <- read.table("daily_88101_2013.csv", sep=",")
+
+names(PM2.5_2013_FRM) <- PM2.5_2013_FRM %>% slice(1) %>% unlist()
+PM2.5_2013_FRM <- PM2.5_2013_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2013 <- PM2.5_2013_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2013 <- MORPC_Region_PM2.5_2013[!duplicated(MORPC_Region_PM2.5_2013[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2013 <- MORPC_Region_PM2.5_Exceedances_2013 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2013$Year <- 2013
+
+#2014
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2014.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2014.csv") 
+PM2.5_2014_FRM <- read.table("daily_88101_2014.csv", sep=",")
+
+names(PM2.5_2014_FRM) <- PM2.5_2014_FRM %>% slice(1) %>% unlist()
+PM2.5_2014_FRM <- PM2.5_2014_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2014 <- PM2.5_2014_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2014 <- MORPC_Region_PM2.5_2014[!duplicated(MORPC_Region_PM2.5_2014[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2014 <- MORPC_Region_PM2.5_Exceedances_2014 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2014$Year <- 2014
+
+#2015
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2015.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2015.csv") 
+PM2.5_2015_FRM <- read.table("daily_88101_2015.csv", sep=",")
+
+names(PM2.5_2015_FRM) <- PM2.5_2015_FRM %>% slice(1) %>% unlist()
+PM2.5_2015_FRM <- PM2.5_2015_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2015 <- PM2.5_2015_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2015 <- MORPC_Region_PM2.5_2015[!duplicated(MORPC_Region_PM2.5_2015[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2015 <- MORPC_Region_PM2.5_Exceedances_2015 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2015$Year <- 2015
+
+#2016
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2016.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2016.csv") 
+PM2.5_2016_FRM <- read.table("daily_88101_2016.csv", sep=",")
+
+names(PM2.5_2016_FRM) <- PM2.5_2016_FRM %>% slice(1) %>% unlist()
+PM2.5_2016_FRM <- PM2.5_2016_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2016 <- PM2.5_2016_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2016 <- MORPC_Region_PM2.5_2016[!duplicated(MORPC_Region_PM2.5_2016[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2016 <- MORPC_Region_PM2.5_Exceedances_2016 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2016$Year <- 2016
+
+#2017
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2017.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2017.csv") 
+PM2.5_2017_FRM <- read.table("daily_88101_2017.csv", sep=",")
+
+names(PM2.5_2017_FRM) <- PM2.5_2017_FRM %>% slice(1) %>% unlist()
+PM2.5_2017_FRM <- PM2.5_2017_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2017 <- PM2.5_2017_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2017 <- MORPC_Region_PM2.5_2017[!duplicated(MORPC_Region_PM2.5_2017[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2017 <- MORPC_Region_PM2.5_Exceedances_2017 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2017$Year <- 2017
+
+#2018
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2018.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2018.csv") 
+PM2.5_2018_FRM <- read.table("daily_88101_2018.csv", sep=",")
+
+names(PM2.5_2018_FRM) <- PM2.5_2018_FRM %>% slice(1) %>% unlist()
+PM2.5_2018_FRM <- PM2.5_2018_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2018 <- PM2.5_2018_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2018 <- MORPC_Region_PM2.5_2018[!duplicated(MORPC_Region_PM2.5_2018[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2018 <- MORPC_Region_PM2.5_Exceedances_2018 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2018$Year <- 2018
+
+#2019
+tempdl <- tempfile()
+download.file("https://aqs.epa.gov/aqsweb/airdata/daily_88101_2019.zip",tempdl, mode="wb") 
+unzip(tempdl, "daily_88101_2019.csv") 
+PM2.5_2019_FRM <- read.table("daily_88101_2019.csv", sep=",")
+
+names(PM2.5_2019_FRM) <- PM2.5_2019_FRM %>% slice(1) %>% unlist()
+PM2.5_2019_FRM <- PM2.5_2019_FRM %>% slice(-1)
+
+MORPC_Region_PM2.5_2019 <- PM2.5_2019_FRM %>% 
+  subset(`State Code` == "39" & `County Code` == "041" |
+         `State Code` == "39" & `County Code` == "045" |
+         `State Code` == "39" & `County Code` == "047" | 
+         `State Code` == "39" & `County Code` == "049" | 
+         `State Code` == "39" & `County Code` == "073" |
+         `State Code` == "39" & `County Code` == "083" | 
+         `State Code` == "39" & `County Code` == "089" | 
+         `State Code` == "39" & `County Code` == "091" | 
+         `State Code` == "39" & `County Code` == "097" | 
+         `State Code` == "39" & `County Code` == "101" | 
+         `State Code` == "39" & `County Code` == "117" | 
+         `State Code` == "39" & `County Code` == "127" | 
+         `State Code` == "39" & `County Code` == "129" | 
+         `State Code` == "39" & `County Code` == "141" | 
+         `State Code` == "39" & `County Code` == "159") %>% #only MORPC Counties
+  mutate(`1st Max Value Num` = as.numeric(paste(`1st Max Value`))) %>%  #make numeric 1st max value
+  subset(`Sample Duration` == "24 HOUR") %>% 
+  subset(`1st Max Value Num` > 35.4) %>%   #Remove all 1st Max values at or below 0.07 (not exceedances)
+  mutate(AQI_Category = ifelse(`1st Max Value Num` > 35.4 & `1st Max Value Num` <= 55.4, "Unhealthy for Sensitive Groups",
+                               ifelse(`1st Max Value Num` > 55.4 & `1st Max Value Num` <= 150.4, "Unhealthy",
+                                      ifelse(`1st Max Value Num` > 150.4 & `1st Max Value Num` <= 250.4, "Very Unhealthy",
+                                             ifelse(`1st Max Value Num` > 250.4, "Hazardous", "Error")))))
+  
+MORPC_Region_PM2.5_Exceedances_2019 <- MORPC_Region_PM2.5_2019[!duplicated(MORPC_Region_PM2.5_2019[c("County Code", 'Date Local')]),]
+
+MORPC_Region_PM2.5_Exceedances_2019 <- MORPC_Region_PM2.5_Exceedances_2019 %>% 
+  group_by(`County Code`, `County Name`, AQI_Category) %>%
+  summarise(Number_Exceedances = length(`1st Max Value Num`))
+
+MORPC_Region_PM2.5_Exceedances_2019$Year <- 2019
+
+#Combine all 
+MORPC_Region_PM2.5_Exceedances_2000_2019 <- rbind(MORPC_Region_PM2.5_Exceedances_2000, MORPC_Region_PM2.5_Exceedances_2001, MORPC_Region_PM2.5_Exceedances_2002, MORPC_Region_PM2.5_Exceedances_2003, MORPC_Region_PM2.5_Exceedances_2004, MORPC_Region_PM2.5_Exceedances_2005, MORPC_Region_PM2.5_Exceedances_2006, MORPC_Region_PM2.5_Exceedances_2007, MORPC_Region_PM2.5_Exceedances_2008, MORPC_Region_PM2.5_Exceedances_2009, MORPC_Region_PM2.5_Exceedances_2010, MORPC_Region_PM2.5_Exceedances_2011, MORPC_Region_PM2.5_Exceedances_2012, MORPC_Region_PM2.5_Exceedances_2013, MORPC_Region_PM2.5_Exceedances_2014, MORPC_Region_PM2.5_Exceedances_2015, MORPC_Region_PM2.5_Exceedances_2016, MORPC_Region_PM2.5_Exceedances_2017, MORPC_Region_PM2.5_Exceedances_2018, MORPC_Region_PM2.5_Exceedances_2019)
+
+MORPC_Region_PM2.5_Exceedances_2000_2019 <- na.omit(MORPC_Region_PM2.5_Exceedances_2000_2019)
+
+MORPC_Region_PM2.5_Exceedances_2000_2019 <- MORPC_Region_PM2.5_Exceedances_2000_2019 %>% 
+  spread(AQI_Category, Number_Exceedances) %>% 
+    replace(is.na(.), 0)
+
+
+
+```
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

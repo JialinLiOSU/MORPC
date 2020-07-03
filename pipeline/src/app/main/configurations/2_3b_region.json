@@ -1,0 +1,12 @@
+{
+	"schema_name": "indicator_2_3a_region",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "year",
+		"field_type": "long",
+        "primary_key": "true"
+	}, {
+		"field_name": "general_per_cap",
+		"field_type": "long"
+	}]
+}

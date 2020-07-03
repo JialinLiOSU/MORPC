@@ -1,0 +1,227 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+#EPA Water Production Data
+##Water Production
+```{r}
+pacman::p_load(dplyr)
+
+#Read in spreadsheet
+library(readxl)
+MORPC_Production_data <- read_excel("//tdata2/transii/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.5 Water Consumption/Data from EPA/MORPC Production data_cleaned.xlsx")
+
+#Some public water systems are duplicated if they have multiple plants. First, sum water produced by year by PWS
+
+  #Create df with PWS, year, and water produced
+Production_PWS_duplicated <- MORPC_Production_data[c("PWS ID", "ADJ REPORTING YEAR", "ADJ TOTAL WATER PRODUCED FOR YEAR IN MG")]
+
+  #sum to PWS by Year
+Production_PWS_Summed <- Production_PWS_duplicated %>% 
+  group_by(`PWS ID`, `ADJ REPORTING YEAR`) %>% 
+  summarise(TOTAL_WATER_PRODUCED_MG = sum(`ADJ TOTAL WATER PRODUCED FOR YEAR IN MG`))
+
+  #Create join table to incldue info
+Production_PWS_Join_Table <- MORPC_Production_data[c("PWS ID", "PWS NAME", "COUNTY", "SOURCE", "SYSTEM TYPE")]
+
+Production_PWS_Join_Table <- Production_PWS_Join_Table[!duplicated(Production_PWS_Join_Table$`PWS ID`),]
+
+#Combine
+MORPC_Production_data <- left_join(Production_PWS_Summed, Production_PWS_Join_Table, by = "PWS ID")
+
+```
+
+##Water Sales
+```{r}
+library(readxl)
+MORPC_Seller_Buyer_List <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.5 Water Consumption/Data from EPA/MORPC Seller Buyer List.xlsx")
+
+#Reduce buyer/seller list
+Seller_Buyer_Red <- MORPC_Seller_Buyer_List[c("number0", "buyer_pws_name", "buyer_county", "seller_pws_id", "seller_pws_name", "seller_county", "seller_pws_source", "seller_train")]
+
+```
+
+##Plant Info
+```{r}
+#Make table with seller id, name, and county
+
+#Production List
+Seller_ID_Plant_Name_1 <- MORPC_Production_data[c("PWS ID", "PWS NAME", "COUNTY")]
+
+colnames(Seller_ID_Plant_Name_1)[1] <- "seller_pws_id"
+
+colnames(Seller_ID_Plant_Name_1)[2] <- "seller_pws_name"
+
+colnames(Seller_ID_Plant_Name_1)[3] <- "seller_county"
+
+Seller_ID_Plant_Name_1 <- Seller_ID_Plant_Name_1[!is.na(Seller_ID_Plant_Name_1$seller_county),]
+
+Seller_ID_Plant_Name_1 <- Seller_ID_Plant_Name_1[!duplicated(Seller_ID_Plant_Name_1$seller_pws_id),]
+
+#Buyer/Seller List
+Seller_ID_Plant_Name_2 <- MORPC_Seller_Buyer_List[c("seller_pws_id", "seller_pws_name", "seller_county")]
+
+Seller_ID_Plant_Name_2 <- Seller_ID_Plant_Name_2[!duplicated(Seller_ID_Plant_Name_2$seller_pws_id),]
+
+Seller_ID_Plant_Name_2 <- Seller_ID_Plant_Name_2[!is.na(Seller_ID_Plant_Name_2$seller_county),]
+
+
+#Combine
+Seller_ID_Plant_Name <- dplyr::bind_rows(Seller_ID_Plant_Name_1, Seller_ID_Plant_Name_2)
+
+Seller_ID_Plant_Name <- Seller_ID_Plant_Name[!duplicated(Seller_ID_Plant_Name$seller_pws_id),]
+
+
+
+```
+
+##Combine
+```{r}
+
+pacman::p_load(dplyr, tidyr, stringr)
+
+MORPC_Production_Sales <- left_join(MORPC_Production_data, Seller_Buyer_Red, by = c(c("PWS ID" = "number0"), c("PWS NAME" = "buyer_pws_name"), c("COUNTY" = "buyer_county")))
+
+#Make starting seller and end recipient
+MORPC_Production_Sales <- mutate(MORPC_Production_Sales, First_Seller = str_sub(seller_train, start = 1, end = 9))
+
+MORPC_Production_First_Seller <- MORPC_Production_Sales[c("PWS ID", "PWS NAME", "COUNTY", "SOURCE", "SYSTEM TYPE", "ADJ REPORTING YEAR", "TOTAL_WATER_PRODUCED_MG", "seller_train", "First_Seller")]
+
+
+#Add first seller plant info
+
+MORPC_Production_Seller <- left_join(MORPC_Production_First_Seller, Seller_ID_Plant_Name, by = c("First_Seller" = "seller_pws_id"))
+
+MORPC_Production_Seller_no_na <- MORPC_Production_Seller[!is.na(MORPC_Production_Seller$First_Seller),]
+
+Water_Sales <- MORPC_Production_Seller_no_na %>% 
+  group_by(`ADJ REPORTING YEAR`, First_Seller) %>% 
+  summarise(Total_Sold = sum(TOTAL_WATER_PRODUCED_MG))
+
+```
+
+#Subtract sales from production
+```{r}
+Production_Data_Sales <- left_join(MORPC_Production_data, Water_Sales, by = c(c("PWS ID" = "First_Seller"), "ADJ REPORTING YEAR"))
+
+Production_Data_Sales$Total_Sold[is.na(Production_Data_Sales$Total_Sold)] <- 0
+
+Production_Data_Sales <- mutate(Production_Data_Sales, TOTAL_WATER_PRODUCED_MINUS_SALES = TOTAL_WATER_PRODUCED_MG - Total_Sold)
+
+Production_Data_Sales <- subset(Production_Data_Sales, Production_Data_Sales$`ADJ REPORTING YEAR` != 1899)
+
+Production_Data_Sales <- subset(Production_Data_Sales, Production_Data_Sales$`ADJ REPORTING YEAR` != 2009)
+
+County_Totals <- Production_Data_Sales %>% 
+  group_by(`ADJ REPORTING YEAR`, COUNTY) %>% 
+  summarise(County_Water_Total = sum(TOTAL_WATER_PRODUCED_MINUS_SALES))
+
+#Sum region population
+Region_Water_Use <- County_Totals %>% 
+  group_by(`ADJ REPORTING YEAR`) %>% 
+  summarise(Total_Water_Use = sum(County_Water_Total))
+
+County_Totals <- County_Totals[c("COUNTY", "ADJ REPORTING YEAR", "County_Water_Total")]
+
+County_Totals <- spread(County_Totals, "ADJ REPORTING YEAR", "County_Water_Total")
+
+County_Totals <- rbind(County_Totals, list("15-County Region", 	69148.22, 77405.73, 80287.73, 78840.61, 79190.18, 78221.56, 78561.96, 77658.64, 78260.50, 80614.32))
+
+County_Totals <- gather(County_Totals, Year, County_Water_Total, "2010":"2019")
+
+County_Totals$Year <- as.numeric(County_Totals$Year)
+
+```
+
+#Read in Census Population Estimates
+```{r}
+pacman::p_load(tidyr, stringr)
+
+library(readxl)
+Population_Population_Change_and_Estimated_Components_of_Population_Change_2010_2018 <- read_excel("//trans4/trans/DATA/External Data/Census/Census PEP/Components_Counties_OH/Population, Population Change, and Estimated Components of Population Change_2010_2018.xlsx", 
+    sheet = "co-est2018-alldata")
+
+Ohio_Pop_Change <- subset(Population_Population_Change_and_Estimated_Components_of_Population_Change_2010_2018, STATE == 39)
+
+MORPC_Pop_Change <- subset(Ohio_Pop_Change, COUNTY == 41 | COUNTY == 45 | COUNTY == 47 | COUNTY == 49 | COUNTY == 73 | COUNTY == 83 | COUNTY == 89 | COUNTY == 91 | COUNTY == 97 | COUNTY == 101 | COUNTY == 117 | COUNTY == 127 | COUNTY == 129 | COUNTY == 141 | COUNTY == 159)
+
+MORPC_Pop_Change <- gather(MORPC_Pop_Change, Variable, Estimate, CENSUS2010POP:RNETMIG2018)
+
+MORPC_Pop_Change <- mutate(MORPC_Pop_Change, Year = str_sub(MORPC_Pop_Change$Variable, start = -4))
+
+MORPC_Pop_Change[1:15, 10] <- "2010"
+
+MORPC_Pop_Change$Year <- as.numeric(MORPC_Pop_Change$Year)
+
+MORPC_Pop_Change <- MORPC_Pop_Change[c("STATE", "COUNTY", "STNAME", "CTYNAME", "Year", "Variable", "Estimate")]
+
+MORPC_Pop_Change$Variable <- str_remove(MORPC_Pop_Change$Variable, pattern = '[[:digit:]]+')
+
+MORPC_Pop_Change <- spread(MORPC_Pop_Change, Variable, Estimate)
+
+MORPC_Pop_Change <- MORPC_Pop_Change[c("CTYNAME" , "Year", "POPESTIMATE")]
+
+MORPC_Pop_Change <- separate(MORPC_Pop_Change, col = CTYNAME, sep = " ", extra = "drop", into = "COUNTY")
+
+MORPC_Pop_Change$COUNTY <- str_to_upper(MORPC_Pop_Change$COUNTY)
+
+#Add in MORPC estimates
+
+MORPC_Pop_Change <- spread(MORPC_Pop_Change, Year, POPESTIMATE)
+
+MORPC_Pop_Change <- mutate(MORPC_Pop_Change, "2019" = ifelse(COUNTY == "DELAWARE", 206900,
+                                                             ifelse(COUNTY == "FAIRFIELD", 156468,
+                                                                    ifelse(COUNTY == "FAYETTE", 28639,
+                                                                           ifelse(COUNTY == "FRANKLIN", 1317692,
+                                                                                  ifelse(COUNTY == "HOCKING", 28374,
+                                                                                         ifelse(COUNTY == "KNOX", 62103,
+                                                                                                ifelse(COUNTY == "LICKING", 176784,
+                                                                                                       ifelse(COUNTY == "LOGAN", 45385,
+                                                                                                              ifelse(COUNTY == "MADISON", 44523,
+                                                                                                                    ifelse(COUNTY == "MARION", 65239,
+                                                                                                                           ifelse(COUNTY == "MORROW", 35133,
+                                                                                                                                            ifelse(COUNTY == "PERRY", 36054,
+                                                                                                                                                   ifelse(COUNTY == "PICKAWAY", 58264, 
+                                                                                                                                                          ifelse(COUNTY == "ROSS", 76953, 
+                                                                                                                                                                 ifelse(COUNTY == "UNION",  58542, "Error"))))))))))))))))
+
+MORPC_Pop_Change <- rbind(MORPC_Pop_Change, list("15-County Region" ,2186776, 2206083, 2225703, 2252290, 2279776, 2304842, 2328883, 2359976, 2384645, 2397053))
+
+MORPC_Pop_Change <- gather(MORPC_Pop_Change, Year, Population_Estimate, "2010":"2019")
+
+MORPC_Pop_Change$Year <- as.numeric(MORPC_Pop_Change$Year)
+
+MORPC_Pop_Change$Population_Estimate <- as.numeric(MORPC_Pop_Change$Population_Estimate)
+
+#Sum region population
+Region_Population <- MORPC_Pop_Change %>% 
+  group_by(Year) %>% 
+  summarise(Population = sum(Population_Estimate))
+
+
+
+```
+
+#Combine
+```{r}
+County_Water_Population_2010_2019 <- left_join(County_Totals, MORPC_Pop_Change, by = c("COUNTY", "Year"))
+
+County_Water_Population_2010_2019 <- mutate(County_Water_Population_2010_2019, Per_Capita_Daily_MG = (County_Water_Total / Population_Estimate) / 365)
+
+County_Water_Population_2010_2019 <- mutate(County_Water_Population_2010_2019, Per_Capita_Daily_Gal = Per_Capita_Daily_MG * 1000000)
+
+write.csv(County_Water_Population_2010_2019, "County_Water_Population_2010_2019.csv")
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

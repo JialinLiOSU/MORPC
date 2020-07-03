@@ -1,0 +1,47 @@
+{
+	"schema_name": "epa_solid_waste_schema",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "index",
+		"field_type": "integer"
+	},{
+		"field_name": "sendcnty",
+		"field_type": "integer"
+	}, {
+		"field_name": "county",
+		"field_type": "string"
+	}, {
+		"field_name": "facility",
+		"field_type": "string"
+	},{
+		"field_name": "tw_dh",
+		"field_type": "string"
+	},{
+		"field_name": "tw_coreid",
+		"field_type": "string"
+	}, {
+		"field_name": "general",
+		"field_type": "decimal"
+	}, {
+		"field_name": "asbestos",
+		"field_type": "decimal"
+	},{
+		"field_name": "residual",
+		"field_type": "decimal"
+	},{
+		"field_name": "industrial",
+		"field_type": "decimal"
+	},{
+		"field_name": "cd_d",
+		"field_type": "decimal"
+	},{
+		"field_name": "exempt",
+		"field_type": "decimal"
+	}, {
+		"field_name": "recyclable",
+		"field_type": "decimal"
+	},{
+		"field_name": "other",
+		"field_type": "decimal"
+	}]
+}

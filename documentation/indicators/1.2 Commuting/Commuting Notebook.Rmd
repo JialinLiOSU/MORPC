@@ -1,0 +1,356 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+#Load packages
+```{r}
+#Census API cred
+pacman::p_load(censusapi, tidycensus, tidyverse)
+
+census_api_key("6a464a4a7e4a2b62d3855896f04094f4838bb2db", overwrite = TRUE)
+
+Sys.setenv(CENSUS_KEY = "6a464a4a7e4a2b62d3855896f04094f4838bb2db")
+# Reload .Renviron
+readRenviron("~/.Renviron")
+# Check to see that the expected key is output in your R console
+Sys.getenv("CENSUS_KEY")
+
+census_key = Sys.getenv("6a464a4a7e4a2b62d3855896f04094f4838bb2db")
+
+#List APIS
+
+apis <- listCensusApis()
+
+pacman::p_load(dplyr)
+
+
+```
+#Decennial 1990
+```{r}
+#Load variables
+v90 <- load_variables(1990, "sf3", cache = TRUE)
+
+commuting_1990 <- getCensus(name = "sf3", vintage = 1990, vars = c("P0490001", "P0490002", "P0490003", "P0490004", "P0490005", "P0490006", "P0490007", "P0490008", "P0490009", "P0490010", "P0490011", "P0490012", "P0490013"), region = "county:*", regionin = "state:39")
+
+commuting_1990 <- subset(commuting_1990, 
+                         county == "041" |
+                           county == "045" |
+                           county == "047" |
+                           county == "049" |
+                           county == "073" |
+                           county == "083" |
+                           county == "089" |
+                           county == "091" |
+                           county == "097" |
+                           county == "101" |
+                           county == "117" |
+                           county == "127" |
+                           county == "129" |
+                           county == "141" |
+                           county == "159")
+
+#Make all workers column
+commuting_1990 <- mutate(commuting_1990, All_Workers = P0490001 + P0490002 + P0490003 + P0490004 + P0490005 + P0490006 + P0490007 + P0490008 + P0490009 + P0490010 + P0490011 + P0490012 + P0490013)
+
+#Add GEOID
+commuting_1990$GEOID <- paste(commuting_1990$state, commuting_1990$county, sep = "")
+
+commuting_1990 <- commuting_1990[c("GEOID", "All_Workers", "P0490001", "P0490002", "P0490003", "P0490004", "P0490005", "P0490006", "P0490007", "P0490008", "P0490009", "P0490010", "P0490011", "P0490012", "P0490013")]
+
+#Calculate region
+commuting_region_1990 <- gather(commuting_1990, Variable, Estimate, All_Workers:P0490013) %>% 
+  group_by(Variable) %>% 
+  summarise(Estimate = sum(Estimate)) %>% 
+  spread(Variable, Estimate) %>% 
+  mutate(GEOID = "Region")
+
+commuting_region_1990 <- commuting_region_1990[c("GEOID", "All_Workers", "P0490001", "P0490002", "P0490003", "P0490004", "P0490005", "P0490006", "P0490007", "P0490008", "P0490009", "P0490010", "P0490011", "P0490012", "P0490013")]
+
+commuting_1990 <- rbind(commuting_1990, commuting_region_1990)
+
+#Calculate % for modes of transportation
+commuting_1990 <- mutate(commuting_1990, Share_Drove_Alone = (P0490001 / All_Workers) * 100)
+
+commuting_1990 <- mutate(commuting_1990, Share_Carpool = (P0490002 / All_Workers) * 100)
+
+commuting_1990 <- mutate(commuting_1990, Share_Public_Transit = ((P0490003 + P0490004 + P0490005 + P0490006 + P0490007) / All_Workers) * 100)
+
+commuting_1990 <- mutate(commuting_1990, Share_Taxi = (P0490008 / All_Workers) * 100)
+
+commuting_1990 <- mutate(commuting_1990, Share_Motorcycle = (P0490009 / All_Workers) * 100)
+
+commuting_1990 <- mutate(commuting_1990, Share_Bike = (P0490010 / All_Workers) * 100)
+
+commuting_1990 <- mutate(commuting_1990, Share_Walk = (P0490011 / All_Workers) * 100)
+
+commuting_1990 <- mutate(commuting_1990, Share_Other = (P0490012 / All_Workers) * 100)
+
+commuting_1990 <- mutate(commuting_1990, Share_Telecommute = (P0490013 / All_Workers) * 100)
+
+
+```
+
+#Decennial 2000
+```{r}
+#Load variables
+v00 <- load_variables(2000, "sf3", cache = TRUE)
+
+commuting_2000 <- getCensus(name = "sf3", vintage = 2000, vars = c("P030001", "P030002", "P030003", "P030004", "P030005", "P030006", "P030007", "P030008", "P030009", "P030010", "P030011", "P030012", "P030013", "P030014", "P030015", "P030016"), region = "county:*", regionin = "state:39")
+
+commuting_2000 <- subset(commuting_2000, 
+                         county == "041" |
+                           county == "045" |
+                           county == "047" |
+                           county == "049" |
+                           county == "073" |
+                           county == "083" |
+                           county == "089" |
+                           county == "091" |
+                           county == "097" |
+                           county == "101" |
+                           county == "117" |
+                           county == "127" |
+                           county == "129" |
+                           county == "141" |
+                           county == "159")
+
+#Make public transit without taxi
+commuting_2000 <- mutate(commuting_2000, Public_Transit_No_Taxi = P030006 + P030007 + P030008 + P030009 + P030010)
+
+#Add GEOID
+commuting_2000$GEOID <- paste(commuting_2000$state, commuting_2000$county, sep = "")
+
+commuting_2000 <- commuting_2000[c("GEOID", "P030001", "P030002", "P030003", "P030004", "P030005", "P030006", "P030007", "P030008", "P030009", "P030010", "P030011", "P030012", "P030013", "P030014", "P030015", "P030016", "Public_Transit_No_Taxi")]
+
+#Calculate region
+commuting_region_2000 <- gather(commuting_2000, Variable, Estimate, P030001:Public_Transit_No_Taxi) %>% 
+  group_by(Variable) %>% 
+  summarise(Estimate = sum(Estimate)) %>% 
+  spread(Variable, Estimate) %>% 
+  mutate(GEOID = "Region")
+
+commuting_region_2000 <- commuting_region_2000[c("GEOID", "P030001", "P030002", "P030003", "P030004", "P030005", "P030006", "P030007", "P030008", "P030009", "P030010", "P030011", "P030012", "P030013", "P030014", "P030015", "P030016", "Public_Transit_No_Taxi")]
+
+commuting_2000 <- rbind(commuting_2000, commuting_region_2000)
+
+#Calculate % for modes of transportation
+commuting_2000 <- mutate(commuting_2000, Share_Drove_Alone = (P030003 / P030001) * 100)
+
+commuting_2000 <- mutate(commuting_2000, Share_Carpool = (P030004 / P030001) * 100)
+
+commuting_2000 <- mutate(commuting_2000, Share_Public_Transit = ((Public_Transit_No_Taxi) / P030001) * 100)
+
+commuting_2000 <- mutate(commuting_2000, Share_Taxi = (P030011 / P030001) * 100)
+
+commuting_2000 <- mutate(commuting_2000, Share_Motorcycle = (P030012 / P030001) * 100)
+
+commuting_2000 <- mutate(commuting_2000, Share_Bike = (P030013 / P030001) * 100)
+
+commuting_2000 <- mutate(commuting_2000, Share_Walk = (P030014 / P030001) * 100)
+
+commuting_2000 <- mutate(commuting_2000, Share_Other = (P030015 / P030001) * 100)
+
+commuting_2000 <- mutate(commuting_2000, Share_Telecommute = (P030016 / P030001) * 100)
+```
+
+#2010
+```{r}
+v10_acs5 <- load_variables(2010, "acs5", cache = TRUE)
+
+commuting_2010 <- get_acs(geography = "county", state = 39, county = c(041, 045, 047, 049, 073, 083, 089, 091, 097, 101, 117, 127, 129, 141, 159), variables = c("B08301_001", "B08301_002", "B08301_003", "B08301_004", "B08301_010", "B08301_011", "B08301_012", "B08301_013", "B08301_014", "B08301_015", "B08301_016", "B08301_017", "B08301_018", "B08301_019", "B08301_020", "B08301_021"), year = 2010, survey = "acs5")
+
+#Drop moe
+commuting_2010 <- commuting_2010[c("GEOID", "variable", "estimate")]
+
+#Calculate region
+commuting_region_2010 <- commuting_2010 %>% 
+  group_by(variable) %>% 
+  summarise(estimate = sum(estimate)) %>% 
+  spread(variable, estimate) %>% 
+  mutate(GEOID = "Region")
+
+commuting_region_2010 <- commuting_region_2010[c("GEOID", "B08301_001", "B08301_002", "B08301_003", "B08301_004", "B08301_010", "B08301_011", "B08301_012", "B08301_013", "B08301_014", "B08301_015", "B08301_016", "B08301_017", "B08301_018", "B08301_019", "B08301_020", "B08301_021")]
+
+#Make data wide
+
+commuting_2010 <- spread(commuting_2010, variable, estimate)
+
+commuting_2010 <- rbind(commuting_2010, commuting_region_2010)
+
+#Calculate % for modes of transportation
+commuting_2010 <- mutate(commuting_2010, Share_Drove_Alone = (B08301_003 / B08301_001) * 100)
+
+commuting_2010 <- mutate(commuting_2010, Share_Carpool = (B08301_004 / B08301_001) * 100)
+
+commuting_2010 <- mutate(commuting_2010, Share_Public_Transit = (B08301_010 / B08301_001) * 100)
+
+commuting_2010 <- mutate(commuting_2010, Share_Taxi = (B08301_016 / B08301_001) * 100)
+
+commuting_2010 <- mutate(commuting_2010, Share_Motorcycle = (B08301_017 / B08301_001) * 100)
+
+commuting_2010 <- mutate(commuting_2010, Share_Bike = (B08301_018 / B08301_001) * 100)
+
+commuting_2010 <- mutate(commuting_2010, Share_Walk = (B08301_019 / B08301_001) * 100)
+
+commuting_2010 <- mutate(commuting_2010, Share_Other = (B08301_020 / B08301_001) * 100)
+
+commuting_2010 <- mutate(commuting_2010, Share_Telecommute = (B08301_021 / B08301_001) * 100)
+
+```
+
+#2018
+```{r}
+#Load Variables
+v18_acs5 <- load_variables(2018, "acs5", cache = TRUE)
+
+#B08301
+commuting_2018 <- get_acs(geography = "county", state = 39, county = c(041, 045, 047, 049, 073, 083, 089, 091, 097, 101, 117, 127, 129, 141, 159), variables = c("B08301_001", "B08301_002", "B08301_003", "B08301_004", "B08301_010", "B08301_011", "B08301_012", "B08301_013", "B08301_014", "B08301_015", "B08301_016", "B08301_017", "B08301_018", "B08301_019", "B08301_020", "B08301_021"), year = 2018, survey = "acs5")
+
+#Drop moe
+commuting_2018 <- commuting_2018[c("GEOID", "variable", "estimate")]
+
+#Calculate region
+commuting_region_2018 <- commuting_2018 %>% 
+  group_by(variable) %>% 
+  summarise(estimate = sum(estimate)) %>% 
+  spread(variable, estimate) %>% 
+  mutate(GEOID = "Region")
+
+commuting_region_2018 <- commuting_region_2018[c("GEOID", "B08301_001", "B08301_002", "B08301_003", "B08301_004", "B08301_010", "B08301_011", "B08301_012", "B08301_013", "B08301_014", "B08301_015", "B08301_016", "B08301_017", "B08301_018", "B08301_019", "B08301_020", "B08301_021")]
+
+#Make data wide
+
+commuting_2018 <- spread(commuting_2018, variable, estimate)
+
+commuting_2018 <- rbind(commuting_2018, commuting_region_2018)
+
+#Calculate % for modes of transportation
+commuting_2018 <- mutate(commuting_2018, Share_Drove_Alone = (B08301_003 / B08301_001) * 100)
+
+commuting_2018 <- mutate(commuting_2018, Share_Carpool = (B08301_004 / B08301_001) * 100)
+
+commuting_2018 <- mutate(commuting_2018, Share_Public_Transit = (B08301_010 / B08301_001) * 100)
+
+commuting_2018 <- mutate(commuting_2018, Share_Taxi = (B08301_016 / B08301_001) * 100)
+
+commuting_2018 <- mutate(commuting_2018, Share_Motorcycle = (B08301_017 / B08301_001) * 100)
+
+commuting_2018 <- mutate(commuting_2018, Share_Bike = (B08301_018 / B08301_001) * 100)
+
+commuting_2018 <- mutate(commuting_2018, Share_Walk = (B08301_019 / B08301_001) * 100)
+
+commuting_2018 <- mutate(commuting_2018, Share_Other = (B08301_020 / B08301_001) * 100)
+
+commuting_2018 <- mutate(commuting_2018, Share_Telecommute = (B08301_021 / B08301_001) * 100)
+
+```
+
+#Compile Drove Alone data
+```{r}
+#1990
+Drove_Alone_1990 <- commuting_1990[c("GEOID", "Share_Drove_Alone")]
+
+Drove_Alone_1990$Year <- 1990
+
+Drove_Alone_1990 <- Drove_Alone_1990[c("GEOID", "Year", "Share_Drove_Alone")]
+
+#2000
+Drove_Alone_2000 <- commuting_2000[c("GEOID", "Share_Drove_Alone")]
+
+Drove_Alone_2000$Year <- 2000
+
+Drove_Alone_2000 <- Drove_Alone_2000[c("GEOID", "Year", "Share_Drove_Alone")]
+
+#2010
+Drove_Alone_2010 <- commuting_2010[c("GEOID", "Share_Drove_Alone")]
+
+Drove_Alone_2010$Year <- 2010
+
+Drove_Alone_2010 <- Drove_Alone_2010[c("GEOID", "Year", "Share_Drove_Alone")]
+
+#2018
+Drove_Alone_2018 <- commuting_2018[c("GEOID", "Share_Drove_Alone")]
+
+Drove_Alone_2018$Year <- 2018
+
+Drove_Alone_2018 <- Drove_Alone_2018[c("GEOID", "Year", "Share_Drove_Alone")]
+
+#Combine
+Drove_Alone_1990_2000_2010_2018 <- rbind(Drove_Alone_1990, Drove_Alone_2000, Drove_Alone_2010, Drove_Alone_2018)
+
+Drove_Alone_1990_2000_2010_2018 <- spread(Drove_Alone_1990_2000_2010_2018, Year, Share_Drove_Alone)
+
+#Add county data
+County_GEOID <- get_acs(geography = "county", state = 39, county = c(041, 045, 047, 049, 073, 083, 089, 091, 097, 101, 117, 127, 129, 141, 159), variables = c("B08301_001"), year = 2010, survey = "acs5")
+
+County_GEOID <- County_GEOID[c("GEOID", "NAME")]
+
+County_GEOID <- rbind(County_GEOID, c("Region", "15-County Region, Ohio"))
+
+Drove_Alone_1990_2000_2010_2018 <- left_join(Drove_Alone_1990_2000_2010_2018, County_GEOID, by = "GEOID")
+
+Drove_Alone_1990_2000_2010_2018 <- Drove_Alone_1990_2000_2010_2018[c("GEOID", "NAME", "1990", "2000", "2010", "2018")]
+
+```
+
+#Compile other transportation methods
+```{r}
+#1990
+Other_Trans_1990 <- commuting_1990[c("GEOID", "Share_Carpool", "Share_Public_Transit", "Share_Taxi", "Share_Motorcycle", "Share_Bike", "Share_Walk", "Share_Other", "Share_Telecommute")]
+
+Other_Trans_1990$Year <- 1990
+
+Other_Trans_1990 <- Other_Trans_1990[c("GEOID", "Year", "Share_Carpool", "Share_Public_Transit", "Share_Taxi", "Share_Motorcycle", "Share_Bike", "Share_Walk", "Share_Other", "Share_Telecommute")]
+
+#2000
+Other_Trans_2000 <- commuting_2000[c("GEOID", "Share_Carpool", "Share_Public_Transit", "Share_Taxi", "Share_Motorcycle", "Share_Bike", "Share_Walk", "Share_Other", "Share_Telecommute")]
+
+Other_Trans_2000$Year <- 2000
+
+Other_Trans_2000 <- Other_Trans_2000[c("GEOID", "Year", "Share_Carpool", "Share_Public_Transit", "Share_Taxi", "Share_Motorcycle", "Share_Bike", "Share_Walk", "Share_Other", "Share_Telecommute")]
+
+#2010
+Other_Trans_2010 <- commuting_2010[c("GEOID", "Share_Carpool", "Share_Public_Transit", "Share_Taxi", "Share_Motorcycle", "Share_Bike", "Share_Walk", "Share_Other", "Share_Telecommute")]
+
+Other_Trans_2010$Year <- 2010
+
+Other_Trans_2010 <- Other_Trans_2010[c("GEOID", "Year", "Share_Carpool", "Share_Public_Transit", "Share_Taxi", "Share_Motorcycle", "Share_Bike", "Share_Walk", "Share_Other", "Share_Telecommute")]
+
+#2018
+Other_Trans_2018 <- commuting_2018[c("GEOID", "Share_Carpool", "Share_Public_Transit", "Share_Taxi", "Share_Motorcycle", "Share_Bike", "Share_Walk", "Share_Other", "Share_Telecommute")]
+
+Other_Trans_2018$Year <- 2018
+
+Other_Trans_2018 <- Other_Trans_2018[c("GEOID", "Year", "Share_Carpool", "Share_Public_Transit", "Share_Taxi", "Share_Motorcycle", "Share_Bike", "Share_Walk", "Share_Other", "Share_Telecommute")]
+
+#Combine
+Other_Trans_1990_2000_2010_2018 <- rbind(Other_Trans_1990, Other_Trans_2000, Other_Trans_2010, Other_Trans_2018)
+
+Other_Trans_1990_2000_2010_2018 <- gather(Other_Trans_1990_2000_2010_2018, Variable, Estimate, Share_Carpool:Share_Telecommute)
+
+#Add county data
+County_GEOID <- get_acs(geography = "county", state = 39, county = c(041, 045, 047, 049, 073, 083, 089, 091, 097, 101, 117, 127, 129, 141, 159), variables = c("B08301_001"), year = 2010, survey = "acs5")
+
+County_GEOID <- County_GEOID[c("GEOID", "NAME")]
+
+County_GEOID <- rbind(County_GEOID, c("Region", "15-County Region, Ohio"))
+
+Other_Trans_1990_2000_2010_2018 <- left_join(Other_Trans_1990_2000_2010_2018, County_GEOID, by = "GEOID")
+
+Other_Trans_1990_2000_2010_2018 <- Other_Trans_1990_2000_2010_2018[c("GEOID", "NAME", "Year", "Variable", "Estimate")]
+
+Other_Trans_1990_2000_2010_2018 <- spread(Other_Trans_1990_2000_2010_2018, Year, Estimate)
+```
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

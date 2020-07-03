@@ -1,0 +1,7 @@
+#<Directory "/var/www/cura-sco-dev.asc.ohio-state.edu">
+        AuthType Basic
+        AuthName "Restricted Content"
+        AuthUserFile /etc/httpd/.htpasswd
+        Require valid-user
+#</Directory>
+

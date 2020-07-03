@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:url" content="http://cura-sco-dev.asc.ohio-state.edu" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="MORPC Sustainability Dashboard (PROTOTYPE)" />
+  <meta property="og:description"
+    content="Information about sustainability goals for Central Ohio, as envisioned by MORPC member communities." />
+  <meta property="og:image" content="http://cura-sco-dev.asc.ohio-state.edu/imgs/screenshot.png" />
+  <meta property="og:image:alt" content="A screen capture of the MORPC Sustainability Dashboard website." />
+  <title>MORPC Sustainability Dashboard (PROTOTYPE)</title>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/jquery.ui.touch-punch.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/lodash.min.js"></script>
+  <script src="js/cookie.js"></script>
+  <script src="js/jquery.csv.js"></script>
+  <script src="js/jquery.csv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/5.0.4/simplebar.min.js"></script>
+  <link rel="stylesheet" href="css/simplebar.css" />
+
+
+
+  <script src="js/gridstack.js"></script>
+  <script src="js/gridstack.jQueryUI.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!-- <script src="js/d3.v4.min.js"></script> -->
+  <script src="js/d3-interpolate-path.js"></script>
+  <script src="js/d3-line-chunked.js"></script>
+  <script src="js/colorbrewer.min.x.js"></script>
+  <script src="js/geojson.min.js"></script>
+  <script src="js/intro.min.js"></script>
+  <script src="js/leaflet.js"></script>
+  <script src="js/esri-leaflet.js"></script>
+  <script src="js/heatmap.min.js"></script>
+  <script src="js/leaflet-heatmap.js"></script>
+
+
+  <script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
+  <script
+    src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js"></script>
+  <script
+    src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.js"></script>
+  <script src="https://kit.fontawesome.com/88fc83302a.js"></script>
+
+  <link href="css/leaflet.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/gridstack.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  <link rel="stylesheet" href="scr/main.css">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/introjs.min.css">
+</head>
+
+<body>
+  <style>
+    .introjs-helperLayer {
+      mix-blend-mode: overlay !important;
+    }
+  </style>
+  <div id="side-bar" class="sidenav">
+    <div id="sidebar-banner-container"
+      style="color:#365072;font-family: 'proxima-nova', sans-serif;font-size: 20px;font-weight: bold; margin-top:10px;">
+      <div id="sidebar-title" style="display:inline-block;  float:left; margin-left:10px">MORPC Sustainability Dashboard
+      </div>
+      <div style="display:inline-block;  float:right; margin-right:20px"><i id="sidebar-close-button"
+          class="fa fa-angle-double-left" style="cursor:pointer;"></i></div>
+    </div>
+    <div id="side-bar-wrapper">
+      <div id="grid-container-sidebar" class="grid-stack-sidebar"></div>
+      <div id="map-info-container" style="background: #FFFFFF; height: 220px" class="sidebar-content"></div>   
+      <button id="options-sidebar-button" style="background: #FFFFFF; height: 70px;" class="collapsible">
+        <i class="fa fa-chevron-right" id="right_chevron" style="font-size:15px; margin: 5px 0px; float: left;"></i>
+        <i class="fa fa-chevron-down" id="down_chevron" style="font-size:15px; margin: 5px 0px; float: left;"
+          hidden=true></i>
+        <h5 id="options-control-title" class="sidebar-heading"
+          style="color:#365072;text-align: center; margin: 0px 15px; font-size: 20px;font-family: 'proxima-nova',sans-serif; float:left;">
+          Options</h5>
+      </button>
+      <div id="options-control-container" style="background: #FFFFFF; " class="sidebar-content content-hidden">
+      </div>
+
+      <div style="padding:0px 10px; width:100%;">
+        <div style="padding:20px; width:100%; margin:auto; display:block;">
+          <img src="imgs/CuraLogoWide.png" style="width:90%; padding:0px; display:block; margin:auto;" />
+        </div>
+        <div style="padding:20px; width:100%; display:block; margin:auto;">
+          <img src="imgs/MorpcLogoWide.png" style="width:70%; padding:0px; display:block; margin:auto;" />
+        </div>
+      </div>
+      <div style="padding:0px 10px; width:100%;">
+        <p style="font-size:20px; color:red;"><strong>Disclaimer: This website is a prototype for technology
+            demostration purposes only. It is intended for use only by MORPC/OSU development team. The information
+            contained herein is not guaranteed to be accurate and is not intended for nor fit for public use.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="banner-container">
+    <div class="mini-submenu side-bar-button" id="mini" title="Expand the map control"
+      style="display: block;margin-left:15px;height:35px">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div id="header-menu" style="margin-bottom:10px; margin-right:10px;">
+      <ul id="menu">
+        <li class="menusel" id="menusel-goal1" goal="goal_1" style='font-size:2em; color:#2A7F67'
+          text='Energy Consumption' data-toggle="tooltip" title="Energy consumption"><i class="fas fa-gas-pump"></i>
+        </li>
+        <li> <a> </a> </li>
+        <li class="menusel" id="menusel-goal2" goal="goal_2" style='font-size:2em; color:#2A7F67'
+          text='Natural Resources' data-toggle="tooltip" title="Natural Resources"><i class="fas fa-burn"></i></li>
+        <li> <a> </a> </li>
+        <li class="menusel" id="menusel-goal3" goal="goal_3" style='font-size:2em; color:#2A7F67'
+          text='Economic Opportunity' data-toggle="tooltip" title="Economic Opportunity"><i
+            class="fas fa-briefcase"></i></li>
+        <li> <a> </a> </li>
+        <li class="menusel" id="menusel-goal4" goal="goal_4" style='font-size:2em; color:#2A7F67'
+          text='Sustainable Neighborhoods' data-toggle="tooltip" title="Sustainable Neighborhoods"><i
+            class="fas fa-seedling"></i></li>
+        <li> <a> </a> </li>
+        <li class="menusel" id="menusel-goal5" goal="goal_5" style='font-size:2em; color:#2A7F67' text='Collaboration'
+          data-toggle="tooltip" title='Collaboration'>
+          <i class="fas fa-users"></i></li>
+        <li> <a> </a> </li>
+        <li class="menulink" id="menusel-share" style='font-size:2em; ' text='Share' data-toggle="modal"
+          data-target="#share-modal"><a data-toggle="tooltip" title='Share'><i class="fas fa-share-square"></i><a></li>
+        <li> <a> </a> </li>
+        <li class="menulink" id="menusel-tutorial" style='font-size:2em; ' text='Tutorial'><a data-toggle="tooltip"
+            title='Tutorial'><i id="start-tutorial" class="fas fa-chalkboard-teacher"></a></i></li>
+        <li> <a> </a> </li>
+        <li class="menulink" id="about" style='font-size:2em;' text='About'><a href="about/index.html"
+            data-toggle="tooltip" title='About'><i href="about/index.html" class="fas fa-question-circle"></i></a></i>
+        </li>
+        <li> <a> </a> </li>
+        <li class="menulink" id="reset" style='font-size:2em;  ' text='Reset'><a href="./index.html"
+            data-toggle="tooltip" title='Reset'><i class="fas fa-undo-alt"></i></a></li>
+
+      </ul>
+    </div>
+  </div>
+
+
+  <div id="grid-container" class="grid-stack"></div>
+
+  <div class="modal fade" id="download-modal" tabindex="-1" role="dialog" aria-labelledby="download-modal-title"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="download-modal-title">Download</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-9">
+              <div id="general-data-tag" class="download-tag">The time-series data of the plot </br>(csv file)</div>
+            </div>
+            <div class="col-sm-3">
+              <button type="button" id="general-data-button" class="btn btn-primary download-button">Download</button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-9">
+              <div id="geo-data-tag" class="download-tag">The geographic data of county-level layer</br> <select id="geo-data-select"></select>(kml file)</div>
+            </div>
+            <div class="col-sm-3">
+              <button type="button" id="geo-data-button" class="btn btn-primary download-button">Download</button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-9">
+              <div id="geo2-data-tag" class="download-tag">The geographic data of county-level layer</br> <select id="geo2-data-select"></select>(csv file)</div>
+            </div>
+            <div class="col-sm-3">
+              <button type="button" id="geo2-data-button" class="btn btn-primary download-button">Download</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade in" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal-title"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="login-modal-title">Login</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="flip-card">
+            <div class="front">
+              <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-9 mx-auto">
+                  <div class="card card-signin my-10">
+                    <div class="card-body">
+                      <h5 class="card-title text-center">Sign In</h5>
+                      <form class="form-signin">
+                        <div class="form-label-group">
+                          <input type="email" id="input-email" class="form-control-login" placeholder="Email address"
+                            required autofocus>
+                          <label for="input-email">Email address</label>
+                        </div>
+                        <div class="form-label-group">
+                          <input type="password" id="input-password" class="form-control-login" placeholder="Password"
+                            required>
+                          <label for="input-password">Password</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-3">
+                          <input type="checkbox" class="custom-control-input" id="customCheck1">
+                          <label class="custom-control-label" for="customCheck1">Remember password</label>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signin-button">Sign
+                          in</button>
+                        <span>Do not have an account?</span><a href="#" id="switch-signup-button"> Sign up</a>
+                        </hr>
+                        <span>Forget password?</span><a href="#" id="forget-password-button"> Find password</a>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-9 mx-auto">
+                  <div class="card card-signin my-10">
+                    <div class="card-body">
+                      <h5 class="card-title text-center">Sign Up</h5>
+                      <form class="form-signin"
+                        oninput='up2.setCustomValidity(up2.value != up.value ? "Passwords do not match." : "")'>
+                        <div class="form-label-group">
+                          <input id="input-name-signup" class="form-control-login" placeholder="Name" required
+                            autofocus>
+                          <label for="input-name-signup">Name</label>
+                        </div>
+
+                        <div class="form-label-group">
+                          <input type="email" id="input-email-signup" class="form-control-login"
+                            placeholder="Email address" required autofocus>
+                          <label for="input-email">Email address</label>
+                        </div>
+
+                        <div class="form-label-group">
+                          <input type="password" id="input-password-signup" class="form-control-login"
+                            placeholder="Password" name="up" required>
+                          <label for="input-password-signup">Password</label>
+                        </div>
+
+                        <div class="form-label-group">
+                          <input type="password" id="input-password-confirm" class="form-control-login"
+                            placeholder="Password" name="up2" required>
+                          <label for="input-password-confirm">Confirm password</label>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signup-button">Sign
+                          up</button>
+                        <span>Already have an account?</span><a href="#" id="back-to-signin-button">Sign in</a>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="share-modal" tabindex="-1" role="dialog" aria-labelledby="share-modal-title"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="share-modal-title">Share</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="share-button-container">
+            <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+              <a class="a2a_button_facebook a2a_button"></a>
+              <a class="a2a_button_twitter a2a_button"></a>
+              <a class="a2a_button_linkedin"></a>
+              <a class="a2a_button_email a2a_button"></a>
+            </div>
+          </div>
+          <script async src="https://static.addtoany.com/menu/page.js"></script>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="scr/class-bar.js"></script>
+  <script src="scr/class-line.js"></script>
+  <script src="scr/class-pie.js"></script>
+  <script src="scr/class-stack.js"></script>
+  <script src="scr/class-maplot.js"></script>
+  <script src="scr/county-labels.js"></script>  
+  <script src="scr/tutorial.js"></script>
+  <script src="scr/dataTest.js"></script>
+  <script src="scr/cardTitleFunctions.js"></script>
+  <script src="scr/configInit.js"></script>
+  <script src="scr/setup.js"></script>
+</body>
+
+</html>

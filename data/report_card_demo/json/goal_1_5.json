@@ -1,0 +1,9 @@
+[
+    { "key": 2012, "BD": 3, "CNG": 5, "E85": 27, "ELEC": 67, "HY": null, "LNG": null, "LPG": 12 },
+    { "key": 2013, "BD": 3, "CNG": 6, "E85": 30, "ELEC": 70, "HY": null, "LNG": null, "LPG": 13 },
+    { "key": 2014, "BD": 3, "CNG": 9, "E85": 36, "ELEC": 72, "HY": null, "LNG": null, "LPG": 16 },
+    { "key": 2015, "BD": 3, "CNG": 12, "E85": 38, "ELEC": 82, "HY": null, "LNG": 1, "LPG": 19 },
+    { "key": 2016, "BD": 3, "CNG": 12, "E85": 40, "ELEC": 93, "HY": null, "LNG": 2, "LPG": 19 },
+    { "key": 2017, "BD": 3, "CNG": 12, "E85": 43, "ELEC": 109, "HY": 1, "LNG": 2, "LPG": 20 },
+    { "key": 2018, "BD": 3, "CNG": 14, "E85": 43, "ELEC": 112, "HY": 1, "LNG": 2, "LPG": 20 }
+]

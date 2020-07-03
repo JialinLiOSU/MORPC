@@ -1,0 +1,23 @@
+{
+    "indicator_name": "2_1a",
+    "config": {
+        "datasets": [
+            "ozone_new"
+        ],
+        "schemas": {
+            "region":{
+                "schema": "2_1a_region",
+                "schema_version": "1.0"
+            },
+            "county": {
+                "schema": "2_1a_county",
+                "schema_version": "1.0"
+                }
+        },
+        "transformation_api": "Indicator2_1a",
+        "transformation_file": "transform_2_1a",
+        "transformation_dir": "app.main.transformation",
+        "temporal_identifier": "2019",
+        "email_address": "mani.46@osu.edu"
+    }
+}

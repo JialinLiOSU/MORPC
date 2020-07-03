@@ -1,0 +1,72 @@
+{
+	"schema_name": "morpc_region_county_population_schema",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "county",
+		"field_type": "string"
+	},{
+		"field_name": "id2",
+		"field_type": "integer",
+        "primary_key": "true"
+	},{
+		"field_name": "2000",
+		"field_type": "long"
+	},{
+		"field_name": "2001",
+		"field_type": "long"
+	},{
+		"field_name": "2002",
+		"field_type": "long"
+	},{
+		"field_name": "2003",
+		"field_type": "long"
+	},{
+		"field_name": "2004",
+		"field_type": "long"
+	},{
+		"field_name": "2005",
+		"field_type": "long"
+	},{
+		"field_name": "2006",
+		"field_type": "long"
+	},{
+		"field_name": "2007",
+		"field_type": "long"
+	},{
+		"field_name": "2008",
+		"field_type": "long"
+	},{
+		"field_name": "2009",
+		"field_type": "long"
+	},{
+		"field_name": "2010",
+		"field_type": "long"
+	},{
+		"field_name": "2011",
+		"field_type": "long"
+	},{
+		"field_name": "2012",
+		"field_type": "long"
+	},{
+		"field_name": "2013",
+		"field_type": "long"
+	},{
+		"field_name": "2014",
+		"field_type": "long"
+	},{
+		"field_name": "2015",
+		"field_type": "long"
+	},{
+		"field_name": "2016",
+		"field_type": "long"
+	},{
+		"field_name": "2017",
+		"field_type": "long"
+	},{
+		"field_name": "2018",
+		"field_type": "long"
+	},{
+		"field_name": "2010",
+		"field_type": "long"
+	}]
+}

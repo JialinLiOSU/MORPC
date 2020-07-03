@@ -1,0 +1,29 @@
+{
+	"schema_name": "approved_facilities_schema",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "name",
+		"field_type": "string"
+	}, {
+		"field_name": "state",
+		"field_type": "string"
+	}, {
+		"field_name": "county",
+		"field_type": "string"
+	},{
+		"field_name": "case_reference",
+		"field_type": "string"
+	},{
+		"field_name": "approved",
+		"field_type": "date"
+	}, {
+		"field_name": "certificate_id",
+		"field_type": "string"
+	}, {
+		"field_name": "technology",
+		"field_type": "string"
+	},{
+		"field_name": "certificate_mw",
+		"field_type": "string"
+	}]
+}

@@ -1,0 +1,37 @@
+{
+	"schema_name": "1_7a_county",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "year",
+		"field_type": "long",
+        "primary_key": "true"
+	}, {
+		"field_name": "abandoned_coal_mine_methane",
+		"field_type": "decimal"
+	}, {
+		"field_name": "biomass",
+		"field_type": "decimal"
+	},{
+		"field_name": "fuelcell",
+		"field_type": "decimal"
+	},{
+		"field_name": "hydroelectric",
+		"field_type": "decimal"
+	}, {
+		"field_name": "solar_pv",
+		"field_type": "decimal"
+	},{
+		"field_name": "solid_waste",
+		"field_type": "decimal"
+	},{
+		"field_name": "waste_energy_recovery",
+		"field_type": "decimal"
+	},{
+		"field_name": "wind",
+		"field_type": "decimal"
+	},{
+		"field_name": "geoid",
+		"field_type": "long",
+        "primary_key": "true"
+	}]
+}

@@ -1,0 +1,217 @@
+{
+	"schema_name": "alternative_fuels_schema",
+	"schema_version": "1.0",
+	"table_fields": [{
+		"field_name": "index",
+		"field_type": "integer"
+	},{
+		"field_name": "access_code",
+		"field_type": "string"
+	}, {
+		"field_name": "access_days_time",
+		"field_type": "string"
+	}, {
+		"field_name": "access_detail_code",
+		"field_type": "string"
+	},{
+		"field_name": "cards_accepted",
+		"field_type": "string"
+	},{
+		"field_name": "date_last_confirmed",
+		"field_type": "date"
+	}, {
+		"field_name": "expected_date",
+		"field_type": "date"
+	}, {
+		"field_name": "fuel_type_code",
+		"field_type": "string"
+	},{
+		"field_name": "groups_with_access_code",
+		"field_type": "string"
+	}, {
+		"field_name": "id",
+		"field_type": "integer",
+		"primary_key": "true"
+	},  {
+		"field_name": "open_date",
+		"field_type": "date"
+	},  {
+		"field_name": "owner_type_code",
+		"field_type": "string"
+	},  {
+		"field_name": "status_code",
+		"field_type": "string"
+	}, {
+		"field_name": "station_name",
+		"field_type": "string"
+	}, {
+		"field_name": "station_phone",
+		"field_type": "string"
+	}, {
+		"field_name": "updated_at",
+		"field_type": "datetime"
+	}, {
+		"field_name": "facility_type",
+		"field_type": "string"
+	}, {
+		"field_name": "geocode_status",
+		"field_type": "string"
+	}, {
+		"field_name": "latitude",
+		"field_type": "decimal"
+	}, {
+		"field_name": "longitude",
+		"field_type": "decimal"
+	},{
+		"field_name": "city",
+		"field_type": "string"
+	}, {
+		"field_name": "intersection_directions",
+		"field_type": "string"
+	}, {
+		"field_name": "plus4",
+		"field_type": "string"
+	}, {
+		"field_name": "state",
+		"field_type": "string"
+	}, {
+		"field_name": "street_address",
+		"field_type": "string"
+	}, {
+		"field_name": "zip",
+		"field_type": "string"
+	}, {
+		"field_name": "country",
+		"field_type": "string"
+	}, {
+		"field_name": "bd_blends",
+		"field_type": "string"
+	}, {
+		"field_name": "cng_dispenser_num",
+		"field_type": "string"
+	}, {
+		"field_name": "cng_fill_type_code",
+		"field_type": "string"
+	}, {
+		"field_name": "cng_psi",
+		"field_type": "string"
+	}, {
+		"field_name": "cng_renewable_resource",
+		"field_type": "string"
+	}, {
+		"field_name": "cng_total_compression",
+		"field_type": "integer"
+	},{
+		"field_name": "cng_total_storage",
+		"field_type": "integer"
+	}, {
+		"field_name": "cng_vehicle_class",
+		"field_type": "string"
+	},{
+		"field_name": "e85_blender_pump",
+		"field_type": "string"
+	},{
+		"field_name": "e85_other_ethanol_blends",
+		"field_type": "string"
+	},{
+		"field_name": "ev_connector_types",
+		"field_type": "array",
+		"subfield_type": "string"
+	},{
+		"field_name": "ev_dc_fast_num",
+		"field_type": "integer"
+	},{
+		"field_name": "ev_level1_evse_num",
+		"field_type": "integer"
+	},{
+		"field_name": "ev_level2_evse_num",
+		"field_type": "integer"
+	}, {
+		"field_name": "ev_network",
+		"field_type": "string"
+	}, {
+		"field_name": "ev_network_web",
+		"field_type": "string"
+	}, {
+		"field_name": "ev_other_evse",
+		"field_type": "string"
+	},{
+		"field_name": "ev_pricing",
+		"field_type": "string"
+	},{
+		"field_name": "ev_renewable_source",
+		"field_type": "string"
+	},{
+		"field_name": "hy_is_retail",
+		"field_type": "array",
+		"subfield_type": "boolean"
+	},{
+		"field_name": "hy_pressures",
+		"field_type": "array",
+		"subfield_type": "string"
+	},{
+		"field_name": "hy_standards",
+		"field_type": "array",
+		"subfield_type": "string"
+	},{
+		"field_name": "hy_status_link",
+		"field_type": "string"
+	},{
+		"field_name": "lng_renewable_source",
+		"field_type": "string"
+	},{
+		"field_name": "lng_vehicle_class",
+		"field_type": "string"
+	},{
+		"field_name": "lpg_primary",
+		"field_type": "boolean"
+	},{
+		"field_name": "lpg_nozzle_types",
+		"field_type": "array",
+		"subfield_type": "string"
+	},{
+		"field_name": "ng_fill_type_code",
+		"field_type": "string"
+	},{
+		"field_name": "ng_psi",
+		"field_type": "string"
+	},{
+		"field_name": "ng_vehicle_class",
+		"field_type": "string"
+	},{
+		"field_name": "access_days_time_fr",
+		"field_type": "string"
+	},{
+		"field_name": "intersection_directions_fr",
+		"field_type": "string"
+	},{
+		"field_name": "bd_blends_fr",
+		"field_type": "string"
+	}, {
+		"field_name": "groups_with_access_code_fr",
+		"field_type": "string"
+	}, {
+		"field_name": "ev_pricing_fr",
+		"field_type": "string"
+	}, {
+		"field_name": "federal_agency_id",
+		"field_type": "string"
+	}, {
+		"field_name": "federal_agency_code",
+		"field_type": "string"
+	}, {
+		"field_name": "federal_agency_name",
+		"field_type": "string"
+	}, {
+		"field_name": "ev_network_ids_posts",
+		"field_type": "string"
+	}, {
+		"field_name": "ev_network_ids_ports",
+		"field_type": "array",
+		"subfield_type": "string"
+	}, {
+		"field_name": "ev_network_ids_station",
+		"field_type": "array",
+		"subfield_type": "string"
+	}]
+}

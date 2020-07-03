@@ -1,0 +1,346 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+
+```{r} 
+pacman::p_load(readxl, dplyr, tidyr)
+#Read in sheets of EPA data and summarize data for each county pacman::p_load(dplyr) 
+#2006 
+EPA_Solid_Waste_2006 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2006") 
+
+EPA_Solid_Waste_2006[is.na(EPA_Solid_Waste_2006)] <- 0 
+
+EPA_Solid_Waste_2006 <- EPA_Solid_Waste_2006 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER))
+
+EPA_Solid_Waste_2006$Year <- 2006 
+
+#2007 
+
+EPA_Solid_Waste_2007 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2007") 
+
+EPA_Solid_Waste_2007[is.na(EPA_Solid_Waste_2007)] <- 0 
+
+EPA_Solid_Waste_2007 <- EPA_Solid_Waste_2007 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2007$Year <- 2007 
+
+#2008 
+
+EPA_Solid_Waste_2008 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2008")
+
+EPA_Solid_Waste_2008[is.na(EPA_Solid_Waste_2008)] <- 0 
+
+EPA_Solid_Waste_2008 <- EPA_Solid_Waste_2008 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2008$Year <- 2008 
+
+#2009 
+EPA_Solid_Waste_2009 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2009") 
+
+EPA_Solid_Waste_2009[is.na(EPA_Solid_Waste_2009)] <- 0 
+
+EPA_Solid_Waste_2009 <- EPA_Solid_Waste_2009 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2009$Year <- 2009 
+
+#2010 
+EPA_Solid_Waste_2010 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2010") 
+
+EPA_Solid_Waste_2010[is.na(EPA_Solid_Waste_2010)] <- 0 
+
+EPA_Solid_Waste_2010 <- EPA_Solid_Waste_2010 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2010$Year <- 2010 
+
+#2011 
+EPA_Solid_Waste_2011 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2011") 
+
+EPA_Solid_Waste_2011[is.na(EPA_Solid_Waste_2011)] <- 0 
+
+EPA_Solid_Waste_2011 <- EPA_Solid_Waste_2011 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2011$Year <- 2011 
+
+#2012 
+EPA_Solid_Waste_2012 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2012") 
+
+EPA_Solid_Waste_2012[is.na(EPA_Solid_Waste_2012)] <- 0 
+
+EPA_Solid_Waste_2012 <- EPA_Solid_Waste_2012 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES),
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2012$Year <- 2012 
+
+#2013 
+EPA_Solid_Waste_2013 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2013") 
+
+EPA_Solid_Waste_2013[is.na(EPA_Solid_Waste_2013)] <- 0 
+
+EPA_Solid_Waste_2013 <- EPA_Solid_Waste_2013 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2013$Year <- 2013 
+
+#2014 
+EPA_Solid_Waste_2014 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2014") 
+
+EPA_Solid_Waste_2014[is.na(EPA_Solid_Waste_2014)] <- 0 
+
+EPA_Solid_Waste_2014 <- EPA_Solid_Waste_2014 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2014$Year <- 2014 
+
+#2015 
+EPA_Solid_Waste_2015 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2015") 
+
+EPA_Solid_Waste_2015[is.na(EPA_Solid_Waste_2015)] <- 0 
+
+EPA_Solid_Waste_2015 <- EPA_Solid_Waste_2015 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2015$Year <- 2015 
+
+#2016 
+EPA_Solid_Waste_2016 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2016") 
+
+EPA_Solid_Waste_2016[is.na(EPA_Solid_Waste_2016)] <- 0 
+
+EPA_Solid_Waste_2016 <- EPA_Solid_Waste_2016 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT),
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2016$Year <- 2016 
+
+#2017 
+EPA_Solid_Waste_2017 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2017") 
+
+EPA_Solid_Waste_2017[is.na(EPA_Solid_Waste_2017)] <- 0 
+
+EPA_Solid_Waste_2017 <- EPA_Solid_Waste_2017 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2017$Year <- 2017 
+
+#2018 
+EPA_Solid_Waste_2018 <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/2 Natural Resources/2.3 Municipal Solid Waste/EPA Solid Waste 2006_2018.xlsx", sheet = "2018") 
+
+EPA_Solid_Waste_2018[is.na(EPA_Solid_Waste_2018)] <- 0 
+
+EPA_Solid_Waste_2018 <- EPA_Solid_Waste_2018 %>% 
+  group_by(COUNTY) %>% 
+  summarise(General_Tons = sum(GENERAL), 
+            Asbestos_Tons = sum(ASBESTOS), 
+            Residual_Tons = sum(RESIDUAL), 
+            Industrial_Tons = sum(INDUSTRIAL), 
+            CDD_Tons = sum(CD_D), 
+            Exempt_Tons = sum(EXEMPT), 
+            Recyclables_Tons = sum(RECYCLABLES), 
+            Other_Tons = sum(OTHER)) 
+
+EPA_Solid_Waste_2018$Year <- 2018 
+
+#Combine all 
+EPA_Solid_Waste_2006_2018 <- rbind(EPA_Solid_Waste_2006, EPA_Solid_Waste_2007, EPA_Solid_Waste_2008, EPA_Solid_Waste_2009, EPA_Solid_Waste_2010, EPA_Solid_Waste_2011, EPA_Solid_Waste_2012, EPA_Solid_Waste_2013, EPA_Solid_Waste_2014, EPA_Solid_Waste_2015, EPA_Solid_Waste_2016, EPA_Solid_Waste_2017, EPA_Solid_Waste_2018) 
+
+pacman::p_load(tidyr) 
+
+EPA_Solid_Waste_2006_2018 <- gather(EPA_Solid_Waste_2006_2018, Variable, Estimate, General_Tons:Other_Tons)
+
+EPA_Solid_Waste_2006_2018[is.na(EPA_Solid_Waste_2006_2018)] <- 0 
+
+EPA_Solid_Waste_2006_2018 <- spread(EPA_Solid_Waste_2006_2018, Variable, Estimate) 
+
+EPA_Solid_Waste_2006_2018 <- subset(EPA_Solid_Waste_2006_2018, COUNTY != "MEIGS") 
+
+#Create lbs calcs 
+
+EPA_Solid_Waste_2006_2018 <- mutate(EPA_Solid_Waste_2006_2018, Asbestos_lbs = Asbestos_Tons * 2000) 
+
+EPA_Solid_Waste_2006_2018 <- mutate(EPA_Solid_Waste_2006_2018, CDD_lbs = CDD_Tons * 2000) 
+
+EPA_Solid_Waste_2006_2018 <- mutate(EPA_Solid_Waste_2006_2018, Exempt_lbs = Exempt_Tons * 2000) 
+
+EPA_Solid_Waste_2006_2018 <- mutate(EPA_Solid_Waste_2006_2018, General_lbs = General_Tons * 2000) 
+
+EPA_Solid_Waste_2006_2018 <- mutate(EPA_Solid_Waste_2006_2018, Industrial_lbs = Industrial_Tons * 2000) 
+
+EPA_Solid_Waste_2006_2018 <- mutate(EPA_Solid_Waste_2006_2018, Other_lbs = Other_Tons * 2000) 
+
+EPA_Solid_Waste_2006_2018 <- mutate(EPA_Solid_Waste_2006_2018, Recyclables_lbs = Recyclables_Tons * 2000) 
+
+EPA_Solid_Waste_2006_2018 <- mutate(EPA_Solid_Waste_2006_2018, Residual_lbs = Residual_Tons * 2000) 
+
+
+```
+
+#Read in population values
+```{r}
+library(readxl)
+MORPC_Region_County_Population_2000_2019_long <- read_excel("O:/Planning & Sustainability/Programs/Sustainable Advisory Committee/Projects/CURA Sustainability Dashboard/Data/County Population/MORPC_Region_County_Population_2000_2019_long.xlsx")
+```
+
+#General Waste
+```{r}
+General_Waste <- EPA_Solid_Waste_2006_2018[c("COUNTY", "Year", "General_lbs")]
+
+#Sum each year for region
+Region_Waste <- General_Waste %>% 
+  group_by(Year) %>% 
+  summarise(General_lbs = sum(General_lbs))
+
+Region_Waste$COUNTY <- "15-County Region"
+
+Region_Waste <- spread(Region_Waste, Year, General_lbs)
+
+General_Waste <- spread(General_Waste, Year, General_lbs)
+
+General_Waste <- rbind(General_Waste, Region_Waste)
+
+General_Waste <- gather(General_Waste, Year, General_lbs, "2006":"2018")
+
+General_Waste$Year <- as.numeric(General_Waste$Year)
+
+#Merge with population
+
+General_Waste_Per_Person <- left_join(General_Waste, MORPC_Region_County_Population_2000_2019_long, by = c("COUNTY", "Year"))
+
+General_Waste_Per_Person <- mutate(General_Waste_Per_Person, Waste_lbs_per_Person_per_day = (General_lbs / Population) / 365)
+```
+
+#Recycling
+```{r}
+Recycling_Waste <- EPA_Solid_Waste_2006_2018[c("COUNTY", "Year", "Recyclables_lbs")]
+
+#Sum each year for region
+Region_Recycling <- Recycling_Waste %>% 
+  group_by(Year) %>% 
+  summarise(Recyclables_lbs = sum(Recyclables_lbs))
+
+Region_Recycling$COUNTY <- "15-County Region"
+
+Region_Recycling <- spread(Region_Recycling, Year, Recyclables_lbs)
+
+Recycling_Waste <- spread(Recycling_Waste, Year, Recyclables_lbs)
+
+Recycling_Waste <- rbind(Recycling_Waste, Region_Recycling)
+
+Recycling_Waste <- gather(Recycling_Waste, Year, Recyclables_lbs, "2006":"2018")
+
+Recycling_Waste$Year <- as.numeric(Recycling_Waste$Year)
+
+#Merge with population
+
+Recycling_Waste_Per_Person <- left_join(Recycling_Waste, MORPC_Region_County_Population_2000_2019_long, by = c("COUNTY", "Year"))
+
+Recycling_Waste_Per_Person <- mutate(Recycling_Waste_Per_Person, Recycling_lbs_per_Person_per_day = (Recyclables_lbs / Population) / 365)
+```
+
+
